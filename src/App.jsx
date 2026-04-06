@@ -46,13 +46,14 @@ function App() {
     if (!flowerData) return;
 
     const imagePath = `/flowers/${flowerData.filename}`;
-    if (!processedImages[imagePath]) return;
+    // Use processed image if available, fallback to original
+    const src = processedImages[imagePath] || imagePath;
 
     // Plant at random position in the garden
     const newFlower = {
       id: nextId,
       name: flowerName,
-      src: processedImages[imagePath],
+      src: src,
       originalSrc: imagePath,
       x: 150 + Math.random() * 400,
       y: 150 + Math.random() * 350,
@@ -69,15 +70,10 @@ function App() {
 
   // Plant the 3 zodiac flowers as a cluster (Natal Bloom)
   const plantNatalBloom = () => {
-    if (Object.keys(processedImages).length === 0) return;
-
     const newFlowers = [];
     const positions = {
-      // Rising: Back-Left (small, z: 3)
       rising: { x: 200, y: 450, scale: flowerScales.rising, zIndex: 3, baseRotation: -20 },
-      // Moon: Back-Right (medium, z: 4)
       moon: { x: 400, y: 400, scale: flowerScales.moon, zIndex: 4, baseRotation: 20 },
-      // Sun: Front-Center (largest, z: 5)
       sun: { x: 300, y: 300, scale: flowerScales.sun, zIndex: 5, baseRotation: 0 },
     };
 
@@ -92,21 +88,20 @@ function App() {
     const sunFlowerData = flowerManifest.find(f => f.name === sunFlowerName);
     if (sunFlowerData) {
       const sunImagePath = `/flowers/${sunFlowerData.filename}`;
-      if (processedImages[sunImagePath]) {
-        const sunPos = addSmallVariation(positions.sun);
-        newFlowers.push({
-          id: nextId,
-          name: sunFlowerName,
-          src: processedImages[sunImagePath],
-          originalSrc: sunImagePath,
-          x: sunPos.x,
-          y: sunPos.y,
-          scale: sunPos.scale,
-          rotation: positions.sun.baseRotation + (Math.random() - 0.5) * 20,
-          zIndex: 5,
-          type: 'sun',
-        });
-      }
+      const src = processedImages[sunImagePath] || sunImagePath;
+      const sunPos = addSmallVariation(positions.sun);
+      newFlowers.push({
+        id: nextId,
+        name: sunFlowerName,
+        src: src,
+        originalSrc: sunImagePath,
+        x: sunPos.x,
+        y: sunPos.y,
+        scale: sunPos.scale,
+        rotation: positions.sun.baseRotation + (Math.random() - 0.5) * 20,
+        zIndex: 5,
+        type: 'sun',
+      });
     }
 
     // Plant Moon Flower
@@ -114,21 +109,20 @@ function App() {
     const moonFlowerData = flowerManifest.find(f => f.name === moonFlowerName);
     if (moonFlowerData) {
       const moonImagePath = `/flowers/${moonFlowerData.filename}`;
-      if (processedImages[moonImagePath]) {
-        const moonPos = addSmallVariation(positions.moon);
-        newFlowers.push({
-          id: nextId + 1,
-          name: moonFlowerName,
-          src: processedImages[moonImagePath],
-          originalSrc: moonImagePath,
-          x: moonPos.x,
-          y: moonPos.y,
-          scale: moonPos.scale,
-          rotation: positions.moon.baseRotation + (Math.random() - 0.5) * 20,
-          zIndex: 4,
-          type: 'moon',
-        });
-      }
+      const src = processedImages[moonImagePath] || moonImagePath;
+      const moonPos = addSmallVariation(positions.moon);
+      newFlowers.push({
+        id: nextId + 1,
+        name: moonFlowerName,
+        src: src,
+        originalSrc: moonImagePath,
+        x: moonPos.x,
+        y: moonPos.y,
+        scale: moonPos.scale,
+        rotation: positions.moon.baseRotation + (Math.random() - 0.5) * 20,
+        zIndex: 4,
+        type: 'moon',
+      });
     }
 
     // Plant Rising Flower
@@ -136,21 +130,20 @@ function App() {
     const risingFlowerData = flowerManifest.find(f => f.name === risingFlowerName);
     if (risingFlowerData) {
       const risingImagePath = `/flowers/${risingFlowerData.filename}`;
-      if (processedImages[risingImagePath]) {
-        const risingPos = addSmallVariation(positions.rising);
-        newFlowers.push({
-          id: nextId + 2,
-          name: risingFlowerName,
-          src: processedImages[risingImagePath],
-          originalSrc: risingImagePath,
-          x: risingPos.x,
-          y: risingPos.y,
-          scale: risingPos.scale,
-          rotation: positions.rising.baseRotation + (Math.random() - 0.5) * 20,
-          zIndex: 3,
-          type: 'rising',
-        });
-      }
+      const src = processedImages[risingImagePath] || risingImagePath;
+      const risingPos = addSmallVariation(positions.rising);
+      newFlowers.push({
+        id: nextId + 2,
+        name: risingFlowerName,
+        src: src,
+        originalSrc: risingImagePath,
+        x: risingPos.x,
+        y: risingPos.y,
+        scale: risingPos.scale,
+        rotation: positions.rising.baseRotation + (Math.random() - 0.5) * 20,
+        zIndex: 3,
+        type: 'rising',
+      });
     }
 
     setFlowers([...flowers, ...newFlowers]);
@@ -162,15 +155,16 @@ function App() {
     if (!flowerData) return;
 
     const imagePath = `/flowers/${flowerData.filename}`;
-    if (!processedImages[imagePath]) return;
+    // Use processed image if available, fallback to original
+    const src = processedImages[imagePath] || imagePath;
 
     const newFlower = {
       id: nextId,
       name: flowerName,
-      src: processedImages[imagePath],
+      src: src,
       originalSrc: imagePath,
-      x: 300 + Math.random() * 100,
-      y: 300 + Math.random() * 100,
+      x: 150 + Math.random() * 400,
+      y: 150 + Math.random() * 350,
       scale: 0.8 + Math.random() * 0.4,
       rotation: Math.random() * 360,
       zIndex: flowers.length + 1,

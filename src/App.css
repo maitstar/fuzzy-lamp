@@ -1,78 +1,84 @@
-/* Manifestation Garden - Autumn Scrapbook Aesthetic */
+/* Manifestation Garden - Elegant Botanical Aesthetic */
 
-/* Soft taupe background */
+/* Soft textured background */
 body, html {
-  background: #e8dfd5;
+  background: #f5f1ed;
+  font-family: 'EB Garamond', 'Crimson Text', Georgia, serif;
 }
 
 .canvas-container {
   perspective: 1000px;
 }
 
-/* Soft autumn gradient canvas background */
+/* Subtle garden canvas */
 .meadow-canvas {
   perspective: 1200px;
   transform-style: preserve-3d;
-  background: linear-gradient(135deg, #d9cfc0 0%, #c9bdb0 50%, #b8a89a 100%);
-  transform: rotateX(2deg);
+  background: linear-gradient(135deg, #ede8e3 0%, #e3dcd5 50%, #d9d2cc 100%);
+  transform: rotateX(1.5deg);
   transform-origin: center top;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' seed='1' /%3E%3CfeDisplacementMap in='SourceGraphic' scale='40' /%3E%3C/filter%3E%3Crect width='400' height='400' fill='%23ede8e3' filter='url(%23noise)' /%3E%3C/svg%3E");
 }
 
-/* Muted grass texture */
+/* Subtle grass overlay */
 .grass-texture {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='3' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='200' height='200' fill='%23a89882' /%3E%3Crect width='200' height='200' fill='%23956d3d' opacity='0.2' filter='url(%23noise)' /%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  background-color: #a89882;
-  opacity: 0.5;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, #8b9a6d 0%, transparent 50%),
+    radial-gradient(2px 2px at 60% 70%, #7a8f5c 0%, transparent 50%),
+    radial-gradient(1px 1px at 50% 50%, #6b8f4d 0%, transparent 50%),
+    radial-gradient(2px 2px at 80% 10%, #799a5f 0%, transparent 50%),
+    radial-gradient(1px 2px at 10% 90%, #8a9b6e 0%, transparent 50%),
+    radial-gradient(2px 1px at 90% 60%, #7b8f5a 0%, transparent 50%);
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  opacity: 0.15;
   z-index: 0;
+  animation: grassSway 20s ease-in-out infinite;
 }
 
-/* Sway animation for planted flowers */
+@keyframes grassSway {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 2% 2%; }
+}
+
+/* Sway animation for flowers */
 .flower-sway {
-  animation: sway 7s ease-in-out infinite;
+  animation: sway 8s ease-in-out infinite;
 }
 
 @keyframes sway {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(1deg);
-  }
-  50% {
-    transform: rotate(-1deg);
-  }
-  75% {
-    transform: rotate(0.5deg);
-  }
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(0.8deg); }
+  50% { transform: rotate(-0.8deg); }
+  75% { transform: rotate(0.4deg); }
 }
 
-/* Soft dirt mound shadow at base of flower */
+/* Soft dirt mound */
 .dirt-mound {
   position: absolute;
   bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
-  height: 10px;
-  background: radial-gradient(ellipse at center, rgba(101, 89, 67, 0.3) 0%, rgba(101, 89, 67, 0.05) 100%);
+  height: 8px;
+  background: radial-gradient(ellipse at center, rgba(120, 100, 80, 0.2) 0%, rgba(120, 100, 80, 0.05) 100%);
   border-radius: 50%;
   z-index: -1;
-  filter: blur(2px);
+  filter: blur(1px);
 }
 
 /* Drag feedback */
 [draggable="true"]:hover {
-  opacity: 0.95;
+  opacity: 0.98;
 }
 
-/* Scrollbar customization */
+/* Soft scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -83,15 +89,14 @@ body, html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #9a8876;
+  background: #bfb5ad;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7a6856;
+  background: #a89f97;
 }
 
-/* Selection prevention */
 .non-selectable {
   user-select: none;
   -webkit-user-select: none;
@@ -100,50 +105,34 @@ body, html {
 }
 
 /* Smooth transitions */
-button,
-select,
-input,
-textarea {
+button, select, input, textarea {
   transition: all 0.3s ease;
 }
 
-/* Soft focus states */
-button:focus-visible,
-select:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
+/* Soft focus */
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(139, 109, 61, 0.2);
+  box-shadow: 0 0 0 2px rgba(101, 89, 67, 0.1);
 }
 
-/* Motion elements */
+/* Motion */
 .flower-float {
   animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-3px) translateX(1px);
-  }
-  50% {
-    transform: translateY(-6px) translateX(-1px);
-  }
-  75% {
-    transform: translateY(-3px) translateX(1px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
 }
 
-/* Range input styling */
+/* Range slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 5px;
-  border-radius: 3px;
-  background: linear-gradient(to right, #7a9a6d, #5a7f8a);
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #a8a89a, #9a9a8c);
   outline: none;
   pointer-events: none;
 }
@@ -152,47 +141,42 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   pointer-events: auto;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #7a9a6d;
-  border: 2px solid #e8dfd5;
-  box-shadow: 0 2px 8px rgba(101, 89, 67, 0.3);
+  background: #9a9a8c;
+  border: 1px solid #e3dcd5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(101, 89, 67, 0.4);
+  transform: scale(1.15);
+  background: #8a8a7c;
 }
 
 input[type="range"]::-moz-range-thumb {
   pointer-events: auto;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #7a9a6d;
-  border: 2px solid #e8dfd5;
-  box-shadow: 0 2px 8px rgba(101, 89, 67, 0.3);
+  background: #9a9a8c;
+  border: 1px solid #e3dcd5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 input[type="range"]::-moz-range-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(101, 89, 67, 0.4);
+  transform: scale(1.15);
+  background: #8a8a7c;
 }
 
-/* Print styles */
 @media print {
-  .controls-section,
-  button,
-  input,
-  select {
+  .controls-section, button, input, select {
     display: none;
   }
-
   body {
     background: white;
   }

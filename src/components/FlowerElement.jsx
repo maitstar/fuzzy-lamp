@@ -115,7 +115,7 @@ export default function FlowerElement({
       {/* Controls (only visible when not sealing) */}
       {!isSealing && showControls && (
         <motion.div
-          className="absolute -top-16 left-1/2 transform -translate-x-1/2 flex gap-3 bg-amber-50 rounded-full px-4 py-3 shadow-xl border-2 border-amber-800"
+          className="absolute -top-14 left-1/2 transform -translate-x-1/2 flex gap-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
@@ -123,15 +123,15 @@ export default function FlowerElement({
           {/* Rotate button */}
           <button
             onClick={handleRotate}
-            className="p-2 border border-amber-800 rounded-full transition text-amber-900 hover:bg-amber-800 hover:bg-opacity-10"
+            className="p-1.5 rounded-sm transition text-gray-600 hover:bg-gray-100"
             title="Rotate flower (45°)"
           >
-            <RotateCw size={16} />
+            <RotateCw size={14} />
           </button>
 
           {/* Scale slider container */}
-          <div className="flex items-center gap-2">
-            <label className="text-xs text-amber-900 font-garamond font-medium whitespace-nowrap">Size:</label>
+          <div className="flex items-center gap-1">
+            <label className="text-xs text-gray-500 font-medium whitespace-nowrap">Size:</label>
             <input
               type="range"
               min="0.3"
@@ -139,11 +139,11 @@ export default function FlowerElement({
               step="0.1"
               value={flower.scale}
               onChange={handleScaleChange}
-              className="w-24 h-2 rounded-full appearance-none cursor-pointer"
+              className="w-20 h-1.5 rounded appearance-none cursor-pointer"
               style={{
                 WebkitAppearance: 'none',
                 appearance: 'none',
-                background: `linear-gradient(to right, #7a9a6d 0%, #5a7f8a ${(flower.scale - 0.3) / 1.7 * 100}%, #9a8876 ${(flower.scale - 0.3) / 1.7 * 100}%, #9a8876 100%)`,
+                background: `linear-gradient(to right, #a8a89a 0%, #9a9a8c ${(flower.scale - 0.3) / 1.7 * 100}%, #e3dcd5 ${(flower.scale - 0.3) / 1.7 * 100}%, #e3dcd5 100%)`,
               }}
               title={`Resize flower (${(flower.scale * 100).toFixed(0)}%)`}
             />
@@ -152,10 +152,10 @@ export default function FlowerElement({
           {/* Delete button */}
           <button
             onClick={handleDelete}
-            className="p-2 border border-red-900 rounded-full transition text-red-900 hover:bg-red-900 hover:bg-opacity-10"
+            className="p-1.5 rounded-sm transition text-gray-600 hover:bg-red-50 hover:text-red-700"
             title="Delete flower"
           >
-            <Trash2 size={16} />
+            <Trash2 size={14} />
           </button>
         </motion.div>
       )}
@@ -163,7 +163,7 @@ export default function FlowerElement({
       {/* Tooltip with flower name */}
       {!isSealing && showControls && (
         <motion.div
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-garamond text-amber-950 bg-amber-50 px-3 py-2 rounded-lg shadow-lg border-2 border-amber-800 whitespace-nowrap font-medium"
+          className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs font-garamond text-gray-700 bg-white bg-opacity-80 px-2 py-1 rounded-sm shadow-lg whitespace-nowrap"
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}

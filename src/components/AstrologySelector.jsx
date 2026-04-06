@@ -13,20 +13,18 @@ export default function AstrologySelector({
   onNatalBloom,
 }) {
   return (
-    <div className="mb-8 space-y-6">
-      {/* Your Soul Blueprint */}
-      <div className="p-6 bg-transparent border-2 border-amber-800 rounded-3xl">
-        <h2 className="text-2xl font-italiana text-amber-900 mb-6 text-center">Your Soul Blueprint</h2>
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {/* Sun Sign */}
-          <div className="text-center">
-            <label className="block text-sm font-garamond text-amber-900 mb-2 font-semibold">
-              ☀️ Sun
-            </label>
+    <div className="mb-6 space-y-5">
+      {/* Your Astrology */}
+      <div className="p-6 bg-white bg-opacity-40 backdrop-blur-sm rounded-lg">
+        <h3 className="text-sm font-italia text-gray-700 mb-4 text-center tracking-wide uppercase">Your Cosmic Blueprint</h3>
+        <div className="grid grid-cols-3 gap-3 mb-5">
+          {/* Sun */}
+          <div>
+            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">☀️ Sun</label>
             <select
               value={sunSign}
               onChange={(e) => onSunChange(e.target.value)}
-              className="w-full px-3 py-2 border-2 border-amber-800 rounded-xl focus:outline-none focus:border-green-800 text-sm bg-transparent text-amber-950 cursor-pointer hover:border-green-800"
+              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
             >
               {zodiacSigns.map(sign => (
                 <option key={sign} value={sign}>{sign}</option>
@@ -34,15 +32,13 @@ export default function AstrologySelector({
             </select>
           </div>
 
-          {/* Moon Sign */}
-          <div className="text-center">
-            <label className="block text-sm font-garamond text-amber-900 mb-2 font-semibold">
-              🌙 Moon
-            </label>
+          {/* Moon */}
+          <div>
+            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">🌙 Moon</label>
             <select
               value={moonSign}
               onChange={(e) => onMoonChange(e.target.value)}
-              className="w-full px-3 py-2 border-2 border-amber-800 rounded-xl focus:outline-none focus:border-blue-900 text-sm bg-transparent text-amber-950 cursor-pointer hover:border-blue-900"
+              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
             >
               {zodiacSigns.map(sign => (
                 <option key={sign} value={sign}>{sign}</option>
@@ -50,15 +46,13 @@ export default function AstrologySelector({
             </select>
           </div>
 
-          {/* Rising Sign */}
-          <div className="text-center">
-            <label className="block text-sm font-garamond text-amber-900 mb-2 font-semibold">
-              ⬆️ Rising
-            </label>
+          {/* Rising */}
+          <div>
+            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">⬆️ Rising</label>
             <select
               value={risingSign}
               onChange={(e) => onRisingChange(e.target.value)}
-              className="w-full px-3 py-2 border-2 border-amber-800 rounded-xl focus:outline-none focus:border-teal-900 text-sm bg-transparent text-amber-950 cursor-pointer hover:border-teal-900"
+              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
             >
               {zodiacSigns.map(sign => (
                 <option key={sign} value={sign}>{sign}</option>
@@ -69,28 +63,27 @@ export default function AstrologySelector({
 
         <button
           onClick={onNatalBloom}
-          className="w-full px-6 py-3 border-2 border-amber-800 hover:border-green-800 text-amber-950 rounded-full font-garamond font-semibold transition-all duration-300 hover:bg-green-800 hover:bg-opacity-5 active:scale-95"
+          className="w-full px-4 py-2 bg-white bg-opacity-60 hover:bg-opacity-80 text-gray-700 rounded-sm font-garamond text-sm transition-all duration-300 uppercase tracking-widest active:scale-95"
         >
-          ✨ Plant Your Soul Foundation (3 flowers)
+          Plant Soul Foundation
         </button>
       </div>
 
       {/* Intentions */}
-      <div className="p-6 bg-transparent border-2 border-amber-800 rounded-3xl">
-        <h2 className="text-2xl font-italiana text-amber-900 mb-4 text-center">Plant Your Intention</h2>
+      <div className="p-6 bg-white bg-opacity-40 backdrop-blur-sm rounded-lg">
+        <h3 className="text-sm font-italiana text-gray-700 mb-3 text-center tracking-wide uppercase">Select Intention</h3>
         <select
           value={selectedIntention}
           onChange={(e) => onIntentionChange(e.target.value)}
-          className="w-full px-4 py-3 border-2 border-amber-800 rounded-xl font-garamond text-amber-950 bg-transparent hover:border-green-800 focus:outline-none focus:border-green-800 cursor-pointer"
+          className="w-full px-3 py-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-sm font-garamond text-gray-700 focus:outline-none text-sm transition cursor-pointer"
         >
           <option value="">Choose an intention...</option>
           {intentionsList.map(intention => (
             <option key={intention} value={intention}>
-              🌸 {intention}
+              {intention}
             </option>
           ))}
         </select>
-        <p className="text-xs text-amber-800 italic mt-2 text-center">A matching flower will plant itself</p>
       </div>
     </div>
   );

@@ -37,19 +37,19 @@ export default function Controls({
     <div className="controls-section mt-6 flex flex-col gap-4">
       {/* Message input */}
       {showMessageInput && (
-        <div className="p-5 bg-transparent border-2 border-amber-800 rounded-2xl">
-          <label className="block text-sm font-garamond font-semibold text-amber-950 mb-2">
+        <div className="p-4 bg-white bg-opacity-60 rounded-lg">
+          <label className="block text-xs font-garamond font-semibold text-gray-700 mb-2 uppercase tracking-widest">
             Add Your Blessing
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Write a message or intention to carry with your garden..."
-            className="w-full p-3 border-2 border-amber-800 rounded-xl text-sm focus:outline-none focus:border-green-800 resize-none bg-transparent text-amber-950 placeholder-amber-700"
+            placeholder="Write a message for your garden..."
+            className="w-full p-3 text-sm focus:outline-none resize-none bg-white text-gray-700 placeholder-gray-400 rounded-sm"
             rows="3"
           />
-          <p className="text-xs text-amber-800 mt-2 italic">
-            Your blessing will appear on the harvested image.
+          <p className="text-xs text-gray-500 mt-2 italic">
+            Will appear on the harvested image.
           </p>
         </div>
       )}
@@ -58,38 +58,36 @@ export default function Controls({
       <div className="flex gap-3">
         <button
           onClick={onMessageToggle}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-amber-800 rounded-full font-garamond font-medium text-sm transition text-amber-950 hover:bg-amber-800 hover:bg-opacity-5 active:scale-95"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white bg-opacity-60 hover:bg-opacity-80 text-gray-700 rounded-sm font-garamond font-medium text-xs transition active:scale-95 uppercase tracking-widest"
           title="Add a blessing to your garden"
         >
-          <MessageCircle size={18} />
-          Blessing
+          <MessageCircle size={16} />
+          Message
         </button>
 
         <button
           onClick={handleExport}
           disabled={isExporting}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-green-800 rounded-full font-garamond font-medium text-sm transition text-green-900 hover:bg-green-800 hover:bg-opacity-5 disabled:opacity-50 active:scale-95"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white bg-opacity-60 hover:bg-opacity-80 text-gray-700 rounded-sm font-garamond font-medium text-xs transition disabled:opacity-50 active:scale-95 uppercase tracking-widest"
           title="Save your garden as a high-resolution image"
         >
-          <Download size={18} />
-          {isExporting ? 'Harvesting...' : 'Harvest'}
+          <Download size={16} />
+          {isExporting ? 'Saving...' : 'Save'}
         </button>
 
         <button
           onClick={onClear}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-red-900 rounded-full font-garamond font-medium text-sm transition text-red-900 hover:bg-red-900 hover:bg-opacity-5 active:scale-95"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white bg-opacity-60 hover:bg-opacity-80 text-gray-700 rounded-sm font-garamond font-medium text-xs transition active:scale-95 uppercase tracking-widest"
           title="Clear the garden"
         >
-          <Trash2 size={18} />
+          <Trash2 size={16} />
           Clear
         </button>
       </div>
 
       {/* Instructions */}
-      <div className="text-xs text-center p-4 bg-transparent border-2 border-amber-800 rounded-2xl font-garamond text-amber-950">
-        <p>🌸 Use the Seed Library to add more flowers</p>
-        <p>✨ Click each flower to rotate, resize, or remove</p>
-        <p>🌿 Harvest when your garden is ready</p>
+      <div className="text-xs text-center p-3 bg-white bg-opacity-40 rounded-lg font-garamond text-gray-600">
+        <p>Use Seed Library to add flowers • Click to edit • Save when ready</p>
       </div>
     </div>
   );
