@@ -13,7 +13,7 @@ export default function AstrologySelector({
   onNatalBloom,
 }) {
   return (
-    <div className="mb-6 space-y-5">
+    <div className="space-y-4">
       {/* Your Astrology */}
       <div className="p-6 bg-white bg-opacity-40 backdrop-blur-sm rounded-lg">
         <h3 className="text-sm font-italia text-gray-700 mb-4 text-center tracking-wide uppercase">Your Cosmic Blueprint</h3>

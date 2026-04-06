@@ -195,13 +195,13 @@ function App() {
 
   if (processingImages) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-green-50 to-green-100">
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-white to-gray-100">
         <div className="text-center">
-          <div className="text-2xl font-serif mb-4">🌿 Awakening the Garden</div>
-          <div className="mb-4 text-sm text-green-700">Germinating seeds...</div>
-          <div className="w-48 h-1 bg-green-200 rounded-full overflow-hidden">
+          <div className="text-2xl font-italiana mb-4 text-gray-800">🌿 Awakening the Garden</div>
+          <div className="mb-4 text-sm text-gray-600">Loading flowers...</div>
+          <div className="w-48 h-1 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-green-500 rounded-full transition-all duration-300"
+              className="h-full bg-gray-600 rounded-full transition-all duration-300"
               style={{ width: `${progress * 100}%` }}
             />
           </div>
@@ -211,15 +211,12 @@ function App() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col bg-cream overflow-hidden">
-      {/* Paper texture overlay */}
-      <div className="paper-texture" />
-
+    <div className="w-full min-h-screen flex flex-col bg-white">
       {/* Header */}
       <Header />
 
-      {/* Main content */}
-      <div className="flex-1 flex gap-6 p-6 overflow-hidden">
+      {/* Main content - scrollable */}
+      <div className="flex-1 flex gap-8 p-8 max-w-7xl mx-auto w-full">
         {/* Left: Canvas area */}
         <div className="flex-1 flex flex-col">
           {/* Astrology & Intention selector */}
@@ -258,13 +255,15 @@ function App() {
           />
         </div>
 
-        {/* Right: Asset tray */}
-        <AssetTray
-          flowers={flowerManifest}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          onFlowerSelect={addFlowerToCanvas}
-        />
+        {/* Right: Asset tray - not fixed */}
+        <div className="w-80">
+          <AssetTray
+            flowers={flowerManifest}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onFlowerSelect={addFlowerToCanvas}
+          />
+        </div>
       </div>
 
       {/* Sealing mode (full-screen capture) */}

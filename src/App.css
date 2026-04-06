@@ -1,9 +1,13 @@
 /* Manifestation Garden - Elegant Botanical Aesthetic */
 
 /* Soft textured background */
-body, html {
-  background: #f5f1ed;
+* {
   font-family: 'EB Garamond', 'Crimson Text', Georgia, serif;
+}
+
+body, html {
+  background: #ffffff;
+  color: #5a5a5a;
 }
 
 .canvas-container {

@@ -14,9 +14,9 @@ export default function AssetTray({
     : searchFlowers(searchQuery);
 
   return (
-    <div className="fixed bottom-6 right-6 max-w-sm z-40">
-      {/* Floating Seed Library */}
-      <div className="bg-white bg-opacity-70 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden">
+    <div>
+      {/* Seed Library */}
+      <div className="bg-white bg-opacity-70 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden sticky top-8">
         {/* Header/Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}

@@ -10,11 +10,10 @@ const Canvas = forwardRef(function Canvas(
   return (
     <div
       ref={ref}
-      className="flex-1 flex items-center justify-center rounded-lg overflow-hidden relative meadow-canvas"
+      className="flex items-center justify-center rounded-lg overflow-hidden relative meadow-canvas my-6"
       style={{
-        minHeight: '500px',
+        height: '550px',
         width: '100%',
-        maxWidth: '700px',
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
       }}
     >
