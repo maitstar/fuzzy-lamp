@@ -12,7 +12,7 @@ const Canvas = forwardRef(function Canvas(
       ref={ref}
       className="flex items-center justify-center rounded-lg overflow-hidden relative meadow-canvas my-6"
       style={{
-        height: '550px',
+        height: 'clamp(400px, 60vh, 650px)',
         width: '100%',
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
       }}

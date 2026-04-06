@@ -10,9 +10,14 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
-  height: 100%;
+html, body {
+  height: auto;
   width: 100%;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 body {
@@ -51,7 +56,6 @@ body {
     );
   background-size: 100px 100px, 100px 100px, 150px 150px, 150px 150px;
   color: #2c2c2c;
-  overflow: hidden;
 }
 
 h1, h2, h3 {

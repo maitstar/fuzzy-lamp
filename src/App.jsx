@@ -14,9 +14,9 @@ import './App.css';
 function App() {
   const canvasRef = useRef(null);
   // Zodiac signs for Natal Bloom feature
-  const [sunSign, setSunSign] = useState('Leo');
-  const [moonSign, setMoonSign] = useState('Pisces');
-  const [risingSign, setRisingSign] = useState('Aquarius');
+  const [sunSign, setSunSign] = useState('Aries');
+  const [moonSign, setMoonSign] = useState('Taurus');
+  const [risingSign, setRisingSign] = useState('Gemini');
   // Manifestation intention
   const [selectedIntention, setSelectedIntention] = useState('');
   const [flowers, setFlowers] = useState([]);
@@ -32,10 +32,10 @@ function App() {
 
   // Auto-plant intention flower when selected
   useEffect(() => {
-    if (selectedIntention && processedImages) {
+    if (selectedIntention && Object.keys(processedImages).length > 0) {
       plantIntentionFlower(selectedIntention);
     }
-  }, [selectedIntention, processedImages]);
+  }, [selectedIntention, processedImages, flowers, nextId]);
 
   // Plant a flower based on intention selection
   const plantIntentionFlower = (intention) => {
@@ -211,7 +211,7 @@ function App() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-white">
+    <div className="w-full flex flex-col bg-white">
       {/* Header */}
       <Header />
 
