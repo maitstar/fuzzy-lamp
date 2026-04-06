@@ -50,7 +50,11 @@ export function useFlowerProcessing(imagePath) {
             const b = data[i + 2];
 
             // If pixel is nearly white (R, G, B all > 248)
-            if (r > 248 && g > 248 && b > 248) {
+            const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+            const maxC = Math.max(r, g, b);
+            const minC = Math.min(r, g, b);
+            const saturation = maxC > 0 ? (maxC - minC) / maxC : 0;
+            if (luminance > 210 && saturation < 0.18) {
               // Make transparent
               data[i + 3] = 0;
             }
@@ -129,7 +133,12 @@ export function useFlowerBatch(imagePaths) {
             const data = imageData.data;
 
             for (let i = 0; i < data.length; i += 4) {
-              if (data[i] > 248 && data[i + 1] > 248 && data[i + 2] > 248) {
+              const r = data[i], g = data[i + 1], b = data[i + 2];
+              const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+              const maxC = Math.max(r, g, b);
+              const minC = Math.min(r, g, b);
+              const saturation = maxC > 0 ? (maxC - minC) / maxC : 0;
+              if (luminance > 210 && saturation < 0.18) {
                 data[i + 3] = 0;
               }
             }

@@ -2,85 +2,56 @@ import { useState } from 'react';
 import { Search, ChevronUp, ChevronDown } from 'lucide-react';
 import { searchFlowers } from '../utils/flowerManifest';
 
-export default function AssetTray({
-  flowers,
-  searchQuery,
-  onSearchChange,
-  onFlowerSelect,
-}) {
+export default function AssetTray({ flowers, searchQuery, onSearchChange, onFlowerSelect }) {
   const [isOpen, setIsOpen] = useState(true);
-  const filteredFlowers = searchQuery.trim() === ''
-    ? flowers
-    : searchFlowers(searchQuery);
+  const filteredFlowers = searchQuery.trim() === '' ? flowers : searchFlowers(searchQuery);
 
   return (
     <div>
-      {/* Seed Library */}
-      <div className="bg-white bg-opacity-70 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden sticky top-8">
-        {/* Header/Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-5 py-3 flex items-center justify-between hover:bg-gray-50 transition text-gray-700"
-        >
-          <div>
-            <h2 className="text-sm font-italiana tracking-widest uppercase">
-              🌿 Seed Library
-            </h2>
-            <p className="text-xs font-garamond text-gray-500">
-              {filteredFlowers.length} varieties
-            </p>
-          </div>
-          <div>
-            {isOpen ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
-          </div>
-        </button>
+      {/* Header toggle */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-1 mb-2"
+      >
+        <p className="text-xs uppercase tracking-widest text-stone-400 font-garamond">Seed Library</p>
+        <span className="text-stone-400">{isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}</span>
+      </button>
 
-        {/* Content (collapsible) */}
-        {isOpen && (
-          <div className="border-t border-gray-200">
-            {/* Search */}
-            <div className="p-4 border-b border-gray-200 bg-gray-50">
-              <div className="relative">
-                <Search className="absolute left-3 top-2.5 text-gray-400" size={14} />
-                <input
-                  type="text"
-                  placeholder="Search flowers..."
-                  value={searchQuery}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm focus:outline-none bg-white rounded-sm text-gray-700"
-                />
-              </div>
-            </div>
-
-            {/* Flower Grid */}
-            <div className="max-h-64 overflow-y-auto p-3 bg-white">
-              {filteredFlowers.length === 0 ? (
-                <div className="text-center text-xs text-gray-400 py-6 font-garamond">
-                  No flowers found
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  {filteredFlowers.map(flower => (
-                    <button
-                      key={flower.id}
-                      onClick={() => onFlowerSelect(flower.name)}
-                      className="p-2 text-left text-xs hover:bg-gray-100 transition duration-200 active:scale-95 text-gray-700 font-garamond"
-                    >
-                      <span className="mr-1">{flower.emoji}</span>
-                      {flower.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Info Footer */}
-            <div className="p-3 text-xs text-gray-500 border-t border-gray-200 bg-gray-50 italic font-garamond text-center">
-              Click to plant • Drag to position • Double-click to remove
-            </div>
+      {isOpen && (
+        <>
+          {/* Search */}
+          <div className="relative mb-2">
+            <Search className="absolute left-2 top-2 text-stone-400" size={13} />
+            <input
+              type="text"
+              placeholder="Search flowers..."
+              value={searchQuery}
+              onChange={e => onSearchChange(e.target.value)}
+              className="w-full pl-7 pr-2 py-1.5 text-xs border border-stone-200 rounded bg-white text-stone-700 focus:outline-none focus:border-stone-400 font-garamond"
+            />
           </div>
-        )}
-      </div>
+
+          {/* Flower grid */}
+          <div className="grid grid-cols-2 gap-1 max-h-72 overflow-y-auto">
+            {filteredFlowers.length === 0 ? (
+              <p className="col-span-2 text-center text-xs text-stone-400 py-4 font-garamond italic">No flowers found</p>
+            ) : (
+              filteredFlowers.map(flower => (
+                <button
+                  key={flower.id}
+                  onClick={() => onFlowerSelect(flower.name)}
+                  className="text-left text-xs px-2 py-1.5 rounded hover:bg-stone-100 text-stone-700 font-garamond active:scale-95 flex items-center gap-1"
+                >
+                  <span>{flower.emoji}</span>
+                  <span className="truncate">{flower.name}</span>
+                </button>
+              ))
+            )}
+          </div>
+
+          <p className="text-xs text-stone-400 italic mt-2 font-garamond">Click to plant • Drag to move • Double-click to remove</p>
+        </>
+      )}
     </div>
   );
 }

@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Header from './components/Header';
 import AstrologySelector from './components/AstrologySelector';
 import Canvas from './components/Canvas';
@@ -7,232 +6,175 @@ import AssetTray from './components/AssetTray';
 import Controls from './components/Controls';
 import { flowerManifest } from './utils/flowerManifest';
 import { zodiacFlowers, flowerScales } from './utils/zodiacMapping';
-import { intentionFlowers, getFlowerForIntention } from './utils/intentionMapping';
+import { getFlowerForIntention } from './utils/intentionMapping';
 import { useFlowerBatch } from './hooks/useFlowerProcessing';
 import './App.css';
 
 function App() {
   const canvasRef = useRef(null);
-  // Zodiac signs for Natal Bloom feature
   const [sunSign, setSunSign] = useState('Aries');
   const [moonSign, setMoonSign] = useState('Taurus');
   const [risingSign, setRisingSign] = useState('Gemini');
-  // Manifestation intention
   const [selectedIntention, setSelectedIntention] = useState('');
   const [flowers, setFlowers] = useState([]);
-  const [nextId, setNextId] = useState(0);
+  const [nextId, setNextId] = useState(100);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSealing, setIsSealing] = useState(false);
   const [message, setMessage] = useState('');
   const [showMessageInput, setShowMessageInput] = useState(false);
+  const [hasAutoPlanted, setHasAutoPlanted] = useState(false);
 
-  // Process all flower images for background removal
-  const imagePaths = flowerManifest.map(f => `/flowers/${f.filename}`);
-  const { processed: processedImages, loading: processingImages, progress } = useFlowerBatch(imagePaths);
+  const imagePaths = useMemo(() => flowerManifest.map(f => `/flowers/${f.filename}`), []);
+  const { processed: processedImages } = useFlowerBatch(imagePaths);
 
-  // Auto-plant intention flower when selected
+  // Helper: get image src with fallback
+  const getSrc = useCallback((imagePath) => {
+    return processedImages[imagePath] || imagePath;
+  }, [processedImages]);
+
+  // Update flower srcs when processed (transparent) images become available
+  // processedImages only changes once (batch completes), so no loop risk
   useEffect(() => {
-    if (selectedIntention && Object.keys(processedImages).length > 0) {
-      plantIntentionFlower(selectedIntention);
-    }
-  }, [selectedIntention, processedImages, flowers, nextId]);
+    if (Object.keys(processedImages).length === 0) return;
+    setFlowers(prev => prev.map(f => ({
+      ...f,
+      src: processedImages[f.originalSrc] || f.originalSrc,
+    })));
+  }, [processedImages]);
 
-  // Plant a flower based on intention selection
-  const plantIntentionFlower = (intention) => {
-    const flowerName = getFlowerForIntention(intention);
-    if (!flowerName) return;
+  // Auto-plant 3 zodiac flowers on first load
+  useEffect(() => {
+    if (hasAutoPlanted) return;
+    setHasAutoPlanted(true);
 
+    const positions = [
+      { x: 80,  y: 280, scale: flowerScales.rising, rotation: -15, sign: 'Aries',  type: 'rising' },
+      { x: 200, y: 180, scale: flowerScales.moon,   rotation:  20, sign: 'Taurus', type: 'moon'   },
+      { x: 140, y: 100, scale: flowerScales.sun,    rotation:   0, sign: 'Gemini', type: 'sun'    },
+    ];
+
+    const autoFlowers = positions.map((pos, i) => {
+      const flowerName = zodiacFlowers[pos.sign];
+      const flowerData = flowerManifest.find(f => f.name === flowerName);
+      if (!flowerData) return null;
+      const imagePath = `/flowers/${flowerData.filename}`;
+      return {
+        id: i,
+        name: flowerName,
+        src: imagePath,
+        originalSrc: imagePath,
+        x: pos.x + (Math.random() - 0.5) * 20,
+        y: pos.y + (Math.random() - 0.5) * 20,
+        scale: pos.scale,
+        rotation: pos.rotation + (Math.random() - 0.5) * 10,
+        zIndex: i + 1,
+        type: pos.type,
+      };
+    }).filter(Boolean);
+
+    setFlowers(autoFlowers);
+  }, []);
+
+  // Plant intention flower — uses functional updates to avoid stale closures
+  useEffect(() => {
+    if (!selectedIntention) return;
+    const flowerName = getFlowerForIntention(selectedIntention);
+    if (!flowerName) { setSelectedIntention(''); return; }
     const flowerData = flowerManifest.find(f => f.name === flowerName);
-    if (!flowerData) return;
+    if (!flowerData) { setSelectedIntention(''); return; }
 
     const imagePath = `/flowers/${flowerData.filename}`;
-    // Use processed image if available, fallback to original
-    const src = processedImages[imagePath] || imagePath;
-
-    // Plant at random position in the garden
-    const newFlower = {
-      id: nextId,
+    setFlowers(prev => [...prev, {
+      id: Date.now(),
       name: flowerName,
-      src: src,
+      src: getSrc(imagePath),
       originalSrc: imagePath,
-      x: 150 + Math.random() * 400,
-      y: 150 + Math.random() * 350,
-      scale: 0.8 + Math.random() * 0.4,
-      rotation: Math.random() * 360,
-      zIndex: flowers.length + 1,
+      x: 120 + Math.random() * 500,
+      y: 100 + Math.random() * 350,
+      scale: 0.7 + Math.random() * 0.5,
+      rotation: (Math.random() - 0.5) * 30,
+      zIndex: Date.now(),
       type: 'intention',
-    };
+    }]);
+    setSelectedIntention('');
+  }, [selectedIntention]);
 
-    setFlowers([...flowers, newFlower]);
-    setNextId(nextId + 1);
-    setSelectedIntention(''); // Reset intention selector
-  };
+  // Plant natal bloom (3 zodiac flowers)
+  const plantNatalBloom = useCallback(() => {
+    const signsConfig = [
+      { sign: sunSign,    x: 140, y: 100, scale: flowerScales.sun,    rotation:   0, type: 'sun' },
+      { sign: moonSign,   x: 200, y: 200, scale: flowerScales.moon,   rotation:  20, type: 'moon' },
+      { sign: risingSign, x:  80, y: 280, scale: flowerScales.rising, rotation: -15, type: 'rising' },
+    ];
 
-  // Plant the 3 zodiac flowers as a cluster (Natal Bloom)
-  const plantNatalBloom = () => {
-    const newFlowers = [];
-    const positions = {
-      rising: { x: 200, y: 450, scale: flowerScales.rising, zIndex: 3, baseRotation: -20 },
-      moon: { x: 400, y: 400, scale: flowerScales.moon, zIndex: 4, baseRotation: 20 },
-      sun: { x: 300, y: 300, scale: flowerScales.sun, zIndex: 5, baseRotation: 0 },
-    };
+    const newFlowers = signsConfig.map((cfg, i) => {
+      const flowerName = zodiacFlowers[cfg.sign];
+      const flowerData = flowerManifest.find(f => f.name === flowerName);
+      if (!flowerData) return null;
+      const imagePath = `/flowers/${flowerData.filename}`;
+      return {
+        id: Date.now() + i,
+        name: flowerName,
+        src: getSrc(imagePath),
+        originalSrc: imagePath,
+        x: cfg.x + (Math.random() - 0.5) * 30,
+        y: cfg.y + (Math.random() - 0.5) * 30,
+        scale: cfg.scale,
+        rotation: cfg.rotation + (Math.random() - 0.5) * 15,
+        zIndex: Date.now() + i,
+        type: cfg.type,
+      };
+    }).filter(Boolean);
 
-    const addSmallVariation = (pos) => ({
-      ...pos,
-      x: pos.x + (Math.random() - 0.5) * 30,
-      y: pos.y + (Math.random() - 0.5) * 30,
-    });
+    setFlowers(prev => [...prev, ...newFlowers]);
+  }, [sunSign, moonSign, risingSign, getSrc]);
 
-    // Plant Sun Flower
-    const sunFlowerName = zodiacFlowers[sunSign];
-    const sunFlowerData = flowerManifest.find(f => f.name === sunFlowerName);
-    if (sunFlowerData) {
-      const sunImagePath = `/flowers/${sunFlowerData.filename}`;
-      const src = processedImages[sunImagePath] || sunImagePath;
-      const sunPos = addSmallVariation(positions.sun);
-      newFlowers.push({
-        id: nextId,
-        name: sunFlowerName,
-        src: src,
-        originalSrc: sunImagePath,
-        x: sunPos.x,
-        y: sunPos.y,
-        scale: sunPos.scale,
-        rotation: positions.sun.baseRotation + (Math.random() - 0.5) * 20,
-        zIndex: 5,
-        type: 'sun',
-      });
-    }
-
-    // Plant Moon Flower
-    const moonFlowerName = zodiacFlowers[moonSign];
-    const moonFlowerData = flowerManifest.find(f => f.name === moonFlowerName);
-    if (moonFlowerData) {
-      const moonImagePath = `/flowers/${moonFlowerData.filename}`;
-      const src = processedImages[moonImagePath] || moonImagePath;
-      const moonPos = addSmallVariation(positions.moon);
-      newFlowers.push({
-        id: nextId + 1,
-        name: moonFlowerName,
-        src: src,
-        originalSrc: moonImagePath,
-        x: moonPos.x,
-        y: moonPos.y,
-        scale: moonPos.scale,
-        rotation: positions.moon.baseRotation + (Math.random() - 0.5) * 20,
-        zIndex: 4,
-        type: 'moon',
-      });
-    }
-
-    // Plant Rising Flower
-    const risingFlowerName = zodiacFlowers[risingSign];
-    const risingFlowerData = flowerManifest.find(f => f.name === risingFlowerName);
-    if (risingFlowerData) {
-      const risingImagePath = `/flowers/${risingFlowerData.filename}`;
-      const src = processedImages[risingImagePath] || risingImagePath;
-      const risingPos = addSmallVariation(positions.rising);
-      newFlowers.push({
-        id: nextId + 2,
-        name: risingFlowerName,
-        src: src,
-        originalSrc: risingImagePath,
-        x: risingPos.x,
-        y: risingPos.y,
-        scale: risingPos.scale,
-        rotation: positions.rising.baseRotation + (Math.random() - 0.5) * 20,
-        zIndex: 3,
-        type: 'rising',
-      });
-    }
-
-    setFlowers([...flowers, ...newFlowers]);
-    setNextId(nextId + 3);
-  };
-
-  const addFlowerToCanvas = (flowerName) => {
+  // Add flower from seed library
+  const addFlowerToCanvas = useCallback((flowerName) => {
     const flowerData = flowerManifest.find(f => f.name === flowerName);
     if (!flowerData) return;
-
     const imagePath = `/flowers/${flowerData.filename}`;
-    // Use processed image if available, fallback to original
-    const src = processedImages[imagePath] || imagePath;
-
-    const newFlower = {
-      id: nextId,
+    setFlowers(prev => [...prev, {
+      id: Date.now(),
       name: flowerName,
-      src: src,
+      src: getSrc(imagePath),
       originalSrc: imagePath,
-      x: 150 + Math.random() * 400,
-      y: 150 + Math.random() * 350,
-      scale: 0.8 + Math.random() * 0.4,
-      rotation: Math.random() * 360,
-      zIndex: flowers.length + 1,
-    };
+      x: 150 + Math.random() * 450,
+      y: 80  + Math.random() * 380,
+      scale: 0.7 + Math.random() * 0.5,
+      rotation: (Math.random() - 0.5) * 40,
+      zIndex: Date.now(),
+    }]);
+  }, [getSrc]);
 
-    setFlowers([...flowers, newFlower]);
-    setNextId(nextId + 1);
-  };
+  const updateFlower = useCallback((id, updates) => {
+    setFlowers(prev => prev.map(f => f.id === id ? { ...f, ...updates } : f));
+  }, []);
 
-  const updateFlower = (id, updates) => {
-    setFlowers(flowers.map(f => f.id === id ? { ...f, ...updates } : f));
-  };
+  const deleteFlower = useCallback((id) => {
+    setFlowers(prev => prev.filter(f => f.id !== id));
+  }, []);
 
-  const deleteFlower = (id) => {
-    setFlowers(flowers.filter(f => f.id !== id));
-  };
-
-  const bringToFront = (id) => {
-    const maxZ = Math.max(...flowers.map(f => f.zIndex), 0);
-    updateFlower(id, { zIndex: maxZ + 1 });
-  };
+  const bringToFront = useCallback((id) => {
+    setFlowers(prev => {
+      const maxZ = Math.max(...prev.map(f => f.zIndex), 0);
+      return prev.map(f => f.id === id ? { ...f, zIndex: maxZ + 1 } : f);
+    });
+  }, []);
 
   const clearCanvas = () => {
-    if (confirm('Clear the garden? All planted flowers will be removed.')) {
-      setFlowers([]);
-    }
+    if (confirm('Clear the garden?')) setFlowers([]);
   };
 
-  if (processingImages) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-white to-gray-100">
-        <div className="text-center">
-          <div className="text-2xl font-italiana mb-4 text-gray-800">🌿 Awakening the Garden</div>
-          <div className="mb-4 text-sm text-gray-600">Loading flowers...</div>
-          <div className="w-48 h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gray-600 rounded-full transition-all duration-300"
-              style={{ width: `${progress * 100}%` }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="w-full flex flex-col bg-white">
-      {/* Header */}
+    <div className="w-full flex flex-col" style={{ minHeight: '100vh', background: '#faf8f5' }}>
       <Header />
 
-      {/* Main content - scrollable */}
-      <div className="flex-1 flex gap-8 p-8 max-w-7xl mx-auto w-full">
-        {/* Left: Canvas area */}
-        <div className="flex-1 flex flex-col">
-          {/* Astrology & Intention selector */}
-          <AstrologySelector
-            sunSign={sunSign}
-            moonSign={moonSign}
-            risingSign={risingSign}
-            onSunChange={setSunSign}
-            onMoonChange={setMoonSign}
-            onRisingChange={setRisingSign}
-            selectedIntention={selectedIntention}
-            onIntentionChange={setSelectedIntention}
-            onNatalBloom={plantNatalBloom}
-          />
+      {/* Two-column layout: Garden LEFT, Controls RIGHT */}
+      <div className="flex flex-1 gap-0 min-h-0">
 
-          {/* Canvas */}
+        {/* LEFT: Garden canvas — main feature, takes all remaining space */}
+        <div className="flex-1 flex flex-col p-6">
           <Canvas
             ref={canvasRef}
             flowers={flowers}
@@ -242,8 +184,6 @@ function App() {
             isSealing={isSealing}
             message={message}
           />
-
-          {/* Controls */}
           <Controls
             onSealBouquet={() => setIsSealing(true)}
             onClear={clearCanvas}
@@ -255,8 +195,19 @@ function App() {
           />
         </div>
 
-        {/* Right: Asset tray - not fixed */}
-        <div className="w-80">
+        {/* RIGHT: Sidebar — zodiac + intention + seed library */}
+        <div className="w-72 flex flex-col gap-4 p-6 overflow-y-auto border-l border-stone-100">
+          <AstrologySelector
+            sunSign={sunSign}
+            moonSign={moonSign}
+            risingSign={risingSign}
+            onSunChange={setSunSign}
+            onMoonChange={setMoonSign}
+            onRisingChange={setRisingSign}
+            selectedIntention={selectedIntention}
+            onIntentionChange={setSelectedIntention}
+            onNatalBloom={plantNatalBloom}
+          />
           <AssetTray
             flowers={flowerManifest}
             searchQuery={searchQuery}
@@ -265,33 +216,6 @@ function App() {
           />
         </div>
       </div>
-
-      {/* Sealing mode (full-screen capture) */}
-      {isSealing && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm">
-            <h3 className="text-xl font-serif mb-4">Seal Your Bouquet</h3>
-            <p className="text-sm text-gray-600 mb-6">Your bouquet is ready to download!</p>
-            <div className="flex gap-4">
-              <button
-                onClick={() => setIsSealing(false)}
-                className="flex-1 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setIsSealing(false);
-                  // Export will be handled in Controls component
-                }}
-                className="flex-1 px-4 py-2 bg-pastel-rose rounded-full hover:bg-pink-300"
-              >
-                Download
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

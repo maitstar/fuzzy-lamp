@@ -2,89 +2,87 @@ import { zodiacSigns } from '../utils/zodiacMapping';
 import { intentionsList } from '../utils/intentionMapping';
 
 export default function AstrologySelector({
-  sunSign,
-  moonSign,
-  risingSign,
-  onSunChange,
-  onMoonChange,
-  onRisingChange,
-  selectedIntention,
-  onIntentionChange,
+  sunSign, moonSign, risingSign,
+  onSunChange, onMoonChange, onRisingChange,
+  selectedIntention, onIntentionChange,
   onNatalBloom,
 }) {
   return (
     <div className="space-y-4">
-      {/* Your Astrology */}
-      <div className="p-6 bg-white bg-opacity-40 backdrop-blur-sm rounded-lg">
-        <h3 className="text-sm font-italia text-gray-700 mb-4 text-center tracking-wide uppercase">Your Cosmic Blueprint</h3>
-        <div className="grid grid-cols-3 gap-3 mb-5">
+
+      {/* ── Soul Blueprint ── */}
+      <div>
+        <p className="text-xs uppercase tracking-widest text-stone-400 mb-3 font-garamond">Your Cosmic Blueprint</p>
+
+        <div className="space-y-2">
           {/* Sun */}
-          <div>
-            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">☀️ Sun</label>
-            <select
-              value={sunSign}
-              onChange={(e) => onSunChange(e.target.value)}
-              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
-            >
-              {zodiacSigns.map(sign => (
-                <option key={sign} value={sign}>{sign}</option>
-              ))}
-            </select>
+          <div className="flex items-center gap-3">
+            <span className="text-sm w-6">☀️</span>
+            <div className="flex-1">
+              <select
+                value={sunSign}
+                onChange={e => onSunChange(e.target.value)}
+                className="w-full text-sm text-stone-700 bg-white border border-stone-200 rounded px-2 py-1.5 focus:outline-none focus:border-stone-400 font-garamond cursor-pointer"
+              >
+                {zodiacSigns.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <span className="text-xs text-stone-400 w-8">Sun</span>
           </div>
 
           {/* Moon */}
-          <div>
-            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">🌙 Moon</label>
-            <select
-              value={moonSign}
-              onChange={(e) => onMoonChange(e.target.value)}
-              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
-            >
-              {zodiacSigns.map(sign => (
-                <option key={sign} value={sign}>{sign}</option>
-              ))}
-            </select>
+          <div className="flex items-center gap-3">
+            <span className="text-sm w-6">🌙</span>
+            <div className="flex-1">
+              <select
+                value={moonSign}
+                onChange={e => onMoonChange(e.target.value)}
+                className="w-full text-sm text-stone-700 bg-white border border-stone-200 rounded px-2 py-1.5 focus:outline-none focus:border-stone-400 font-garamond cursor-pointer"
+              >
+                {zodiacSigns.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <span className="text-xs text-stone-400 w-8">Moon</span>
           </div>
 
           {/* Rising */}
-          <div>
-            <label className="block text-xs font-garamond text-gray-600 mb-1 uppercase tracking-widest">⬆️ Rising</label>
-            <select
-              value={risingSign}
-              onChange={(e) => onRisingChange(e.target.value)}
-              className="w-full px-2 py-2 text-xs bg-white bg-opacity-70 rounded-sm focus:outline-none text-gray-700 cursor-pointer hover:bg-opacity-100 transition font-garamond"
-            >
-              {zodiacSigns.map(sign => (
-                <option key={sign} value={sign}>{sign}</option>
-              ))}
-            </select>
+          <div className="flex items-center gap-3">
+            <span className="text-sm w-6">⬆️</span>
+            <div className="flex-1">
+              <select
+                value={risingSign}
+                onChange={e => onRisingChange(e.target.value)}
+                className="w-full text-sm text-stone-700 bg-white border border-stone-200 rounded px-2 py-1.5 focus:outline-none focus:border-stone-400 font-garamond cursor-pointer"
+              >
+                {zodiacSigns.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <span className="text-xs text-stone-400 w-8">Rising</span>
           </div>
         </div>
 
         <button
           onClick={onNatalBloom}
-          className="w-full px-4 py-2 bg-white bg-opacity-60 hover:bg-opacity-80 text-gray-700 rounded-sm font-garamond text-sm transition-all duration-300 uppercase tracking-widest active:scale-95"
+          className="mt-3 w-full text-xs py-2 px-3 bg-stone-800 text-white rounded font-garamond tracking-wide hover:bg-stone-700 uppercase"
         >
-          Plant Soul Foundation
+          ✨ Plant Soul Foundation
         </button>
       </div>
 
-      {/* Intentions */}
-      <div className="p-6 bg-white bg-opacity-40 backdrop-blur-sm rounded-lg">
-        <h3 className="text-sm font-italiana text-gray-700 mb-3 text-center tracking-wide uppercase">Select Intention</h3>
+      {/* ── Intention ── */}
+      <div>
+        <p className="text-xs uppercase tracking-widest text-stone-400 mb-2 font-garamond">Plant an Intention</p>
         <select
           value={selectedIntention}
-          onChange={(e) => onIntentionChange(e.target.value)}
-          className="w-full px-3 py-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-sm font-garamond text-gray-700 focus:outline-none text-sm transition cursor-pointer"
+          onChange={e => onIntentionChange(e.target.value)}
+          className="w-full text-sm text-stone-700 bg-white border border-stone-200 rounded px-2 py-1.5 focus:outline-none focus:border-green-600 font-garamond cursor-pointer"
         >
           <option value="">Choose an intention...</option>
-          {intentionsList.map(intention => (
-            <option key={intention} value={intention}>
-              {intention}
-            </option>
-          ))}
+          {intentionsList.map(i => <option key={i} value={i}>{i}</option>)}
         </select>
+        <p className="text-xs text-stone-400 mt-1 italic">A flower will plant itself</p>
       </div>
+
     </div>
   );
 }

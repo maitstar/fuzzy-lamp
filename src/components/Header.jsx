@@ -1,13 +1,13 @@
 export default function Header() {
   return (
-    <header className="bg-white bg-opacity-60 backdrop-blur-sm py-12 px-6 shadow-sm">
+    <header className="bg-white py-5 px-6 shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
-          <h1 className="text-5xl font-italiana text-amber-950 text-center tracking-wide">
+          <h1 className="text-4xl font-italiana text-stone-800 text-center tracking-wide">
             ✨ Manifestation Garden
           </h1>
-          <p className="text-center text-xs text-gray-600 mt-3 font-garamond tracking-widest">
-            PLANT YOUR INTENTIONS
+          <p className="text-center text-xs text-stone-500 mt-1 font-garamond tracking-widest uppercase">
+            Plant your intentions
           </p>
         </div>
       </div>

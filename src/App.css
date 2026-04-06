@@ -1,187 +1,102 @@
-/* Manifestation Garden - Elegant Botanical Aesthetic */
+/* Manifestation Garden — Botanical Aesthetic */
 
-/* Soft textured background */
-* {
-  font-family: 'EB Garamond', 'Crimson Text', Georgia, serif;
-}
+.canvas-container { perspective: 1000px; }
 
-body, html {
-  background: #ffffff;
-  color: #5a5a5a;
-}
-
-.canvas-container {
-  perspective: 1000px;
-}
-
-/* Subtle garden canvas */
+/* ─── LUSH GREEN GARDEN ─── */
 .meadow-canvas {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  background: linear-gradient(135deg, #ede8e3 0%, #e3dcd5 50%, #d9d2cc 100%);
-  transform: rotateX(1.5deg);
+  background:
+    /* grass blade texture on top */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%233a6b2a'/%3E%3Cline x1='10' y1='120' x2='8' y2='60' stroke='%234a8c35' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='25' y1='120' x2='28' y2='50' stroke='%23396326' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='40' y1='120' x2='36' y2='65' stroke='%2352a03c' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='55' y1='120' x2='57' y2='55' stroke='%23447830' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='70' y1='120' x2='66' y2='60' stroke='%234d9438' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='85' y1='120' x2='88' y2='70' stroke='%23396326' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='100' y1='120' x2='97' y2='55' stroke='%2352a03c' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='115' y1='120' x2='112' y2='65' stroke='%234a8c35' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='18' y1='120' x2='22' y2='80' stroke='%23447830' stroke-width='1' stroke-linecap='round'/%3E%3Cline x1='60' y1='120' x2='63' y2='85' stroke='%234d9438' stroke-width='1' stroke-linecap='round'/%3E%3Cline x1='90' y1='120' x2='87' y2='75' stroke='%23396326' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E"),
+    /* base green gradient */
+    linear-gradient(180deg, #4a8c35 0%, #3a6b2a 50%, #2d5520 100%);
+  background-size: 120px 120px, 100% 100%;
+  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+  transform: rotateX(2deg);
   transform-origin: center top;
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' seed='1' /%3E%3CfeDisplacementMap in='SourceGraphic' scale='40' /%3E%3C/filter%3E%3Crect width='400' height='400' fill='%23ede8e3' filter='url(%23noise)' /%3E%3C/svg%3E");
+  perspective: 800px;
+  transform-style: preserve-3d;
+  border-radius: 12px;
 }
 
-/* Subtle grass overlay */
+/* grass texture overlay – animated subtle sway */
 .grass-texture {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image:
-    radial-gradient(2px 2px at 20% 30%, #8b9a6d 0%, transparent 50%),
-    radial-gradient(2px 2px at 60% 70%, #7a8f5c 0%, transparent 50%),
-    radial-gradient(1px 1px at 50% 50%, #6b8f4d 0%, transparent 50%),
-    radial-gradient(2px 2px at 80% 10%, #799a5f 0%, transparent 50%),
-    radial-gradient(1px 2px at 10% 90%, #8a9b6e 0%, transparent 50%),
-    radial-gradient(2px 1px at 90% 60%, #7b8f5a 0%, transparent 50%);
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-  opacity: 0.15;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='transparent'/%3E%3Cline x1='8' y1='80' x2='5' y2='40' stroke='%235ab040' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/%3E%3Cline x1='20' y1='80' x2='23' y2='45' stroke='%2362c447' stroke-width='1' stroke-linecap='round' opacity='0.5'/%3E%3Cline x1='35' y1='80' x2='32' y2='38' stroke='%2358a83d' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/%3E%3Cline x1='50' y1='80' x2='53' y2='50' stroke='%2367cc4a' stroke-width='1' stroke-linecap='round' opacity='0.4'/%3E%3Cline x1='65' y1='80' x2='62' y2='42' stroke='%235ab040' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  opacity: 0.35;
   z-index: 0;
-  animation: grassSway 20s ease-in-out infinite;
+  animation: grassSway 8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes grassSway {
-  0%, 100% { background-position: 0% 0%; }
-  50% { background-position: 2% 2%; }
+  0%, 100% { background-position: 0px 0px; }
+  50%       { background-position: 3px 0px; }
 }
 
-/* Sway animation for flowers */
-.flower-sway {
-  animation: sway 8s ease-in-out infinite;
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(0.8deg); }
-  50% { transform: rotate(-0.8deg); }
-  75% { transform: rotate(0.4deg); }
-}
-
-/* Soft dirt mound */
+/* dirt mound shadow under each flower */
 .dirt-mound {
   position: absolute;
   bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 85%;
-  height: 8px;
-  background: radial-gradient(ellipse at center, rgba(120, 100, 80, 0.2) 0%, rgba(120, 100, 80, 0.05) 100%);
+  width: 90%;
+  height: 10px;
+  background: radial-gradient(ellipse, rgba(60,40,10,0.35) 0%, transparent 70%);
   border-radius: 50%;
   z-index: -1;
-  filter: blur(1px);
+  filter: blur(2px);
 }
 
-/* Drag feedback */
-[draggable="true"]:hover {
-  opacity: 0.98;
+/* flower sway in breeze */
+.flower-sway {
+  animation: sway 6s ease-in-out infinite;
 }
 
-/* Soft scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@keyframes sway {
+  0%, 100% { transform: rotate(0deg); }
+  30%       { transform: rotate(1.2deg); }
+  70%       { transform: rotate(-1.2deg); }
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c8c0b8; border-radius: 3px; }
 
-::-webkit-scrollbar-thumb {
-  background: #bfb5ad;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a89f97;
-}
-
-.non-selectable {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-/* Smooth transitions */
-button, select, input, textarea {
-  transition: all 0.3s ease;
-}
-
-/* Soft focus */
-button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(101, 89, 67, 0.1);
-}
-
-/* Motion */
-.flower-float {
-  animation: float 5s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-}
-
-/* Range slider */
+/* range slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: linear-gradient(to right, #a8a89a, #9a9a8c);
+  background: linear-gradient(to right, #5a8f3a, #3a6b2a);
   outline: none;
   pointer-events: none;
 }
-
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   pointer-events: auto;
-  width: 12px;
-  height: 12px;
+  width: 13px; height: 13px;
   border-radius: 50%;
-  background: #9a9a8c;
-  border: 1px solid #e3dcd5;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #4a7c35;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   cursor: pointer;
-  transition: all 0.2s ease;
 }
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-  background: #8a8a7c;
-}
+/* smooth button transitions */
+button { transition: all 0.2s ease; }
+button:hover { opacity: 0.85; }
+button:active { transform: scale(0.97); }
 
-input[type="range"]::-moz-range-thumb {
-  pointer-events: auto;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #9a9a8c;
-  border: 1px solid #e3dcd5;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  transform: scale(1.15);
-  background: #8a8a7c;
-}
+select, input, textarea { transition: all 0.2s ease; }
 
 @media print {
-  .controls-section, button, input, select {
-    display: none;
-  }
-  body {
-    background: white;
-  }
+  .controls-section, button, input, select { display: none; }
+  body { background: white; }
 }
