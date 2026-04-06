@@ -1,0 +1,136 @@
+/* App-specific styles */
+
+.canvas-container {
+  perspective: 1000px;
+}
+
+/* Drag feedback */
+[draggable="true"]:hover {
+  opacity: 0.95;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4A574;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8956A;
+}
+
+/* Selection prevention for non-interactive elements */
+.non-selectable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Smooth transitions */
+button,
+select,
+input,
+textarea {
+  transition: all 0.2s ease;
+}
+
+/* Focus states */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #FFFDF5, 0 0 0 4px #F4D6D6;
+}
+
+/* Motion elements */
+.flower-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-4px) translateX(1px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-1px);
+  }
+  75% {
+    transform: translateY(-4px) translateX(1px);
+  }
+}
+
+/* Range input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #D4B5E8, #E8A8C4);
+  outline: none;
+  pointer-events: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #E8A8C4;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #E8A8C4;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Print styles */
+@media print {
+  .controls-section,
+  button,
+  input,
+  select {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+}

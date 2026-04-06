@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FFFDF5;
+  background-image:
+    /* Linen weave pattern */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      rgba(139, 90, 43, 0.015) 1px,
+      rgba(139, 90, 43, 0.015) 2px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 1px,
+      rgba(139, 90, 43, 0.015) 1px,
+      rgba(139, 90, 43, 0.015) 2px
+    ),
+    /* Cross-hatch grain */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.015) 2px,
+      rgba(0, 0, 0, 0.015) 3px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.015) 2px,
+      rgba(0, 0, 0, 0.015) 3px
+    );
+  background-size: 100px 100px, 100px 100px, 150px 150px, 150px 150px;
+  color: #2c2c2c;
+  overflow: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+}
+
+button {
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0px);
+}
+
+/* Paper texture overlay */
+.paper-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 90, 43, 0.02) 2px,
+      rgba(139, 90, 43, 0.02) 4px
+    );
+  opacity: 0.4;
+  z-index: -1;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-4px) translateX(1px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-1px);
+  }
+  75% {
+    transform: translateY(-4px) translateX(1px);
+  }
+}
+
+.flower-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Image aspect ratio fix */
+img {
+  object-fit: contain;
+  aspect-ratio: auto;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFFDF5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4A574;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8956A;
+}

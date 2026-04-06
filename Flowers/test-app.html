@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Zodiac App</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #f0f0f0; }
+    .log { background: white; padding: 8px; margin: 4px 0; border: 1px solid #ccc; }
+    .error { color: red; background: #ffcccc; }
+    .success { color: green; background: #ccffcc; }
+    h2 { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Zodiac Bouquet App - Test</h1>
+  <div id="logs"></div>
+
+  <script src="data.js"></script>
+  <script>
+    const logDiv = document.getElementById('logs');
+
+    function log(msg, type = 'info') {
+      const div = document.createElement('div');
+      div.className = 'log ' + type;
+      div.textContent = msg;
+      logDiv.appendChild(div);
+    }
+
+    // Test 1: Data loaded
+    log('Test 1: Checking data.js', 'info');
+    if (typeof zodiacSigns !== 'undefined') {
+      log('✓ zodiacSigns loaded: ' + zodiacSigns.length + ' signs', 'success');
+    } else {
+      log('✗ zodiacSigns not loaded', 'error');
+    }
+
+    if (typeof zodiacFlowers !== 'undefined') {
+      log('✓ zodiacFlowers loaded: ' + Object.keys(zodiacFlowers).length + ' mappings', 'success');
+    } else {
+      log('✗ zodiacFlowers not loaded', 'error');
+    }
+
+    if (typeof accentFlowers !== 'undefined') {
+      log('✓ accentFlowers loaded: ' + accentFlowers.length + ' accents', 'success');
+    } else {
+      log('✗ accentFlowers not loaded', 'error');
+    }
+
+    // Test 2: Try creating a select programmatically
+    log('\nTest 2: Creating select options', 'info');
+    const testSelect = document.createElement('select');
+    zodiacSigns.forEach(sign => {
+      const opt = document.createElement('option');
+      opt.value = sign;
+      opt.textContent = sign;
+      testSelect.appendChild(opt);
+    });
+    log('✓ Created select with ' + testSelect.options.length + ' options', 'success');
+    log('First option: ' + testSelect.options[0].textContent, 'success');
+
+    // Test 3: Image loading
+    log('\nTest 3: Testing image paths', 'info');
+    const testImg = new Image();
+    testImg.onload = () => {
+      log('✓ Successfully loaded image: Sunflower_10.jpeg', 'success');
+    };
+    testImg.onerror = () => {
+      log('✗ Failed to load image: Sunflower_10.jpeg', 'error');
+    };
+    testImg.src = 'Sunflower_10.jpeg';
+
+    // Test 4: Canvas setup
+    log('\nTest 4: Canvas setup', 'info');
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      log('✓ Canvas 2D context created', 'success');
+
+      // Try filling with white
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 600, 600);
+      log('✓ Canvas can be drawn to', 'success');
+    } else {
+      log('✗ Failed to get canvas context', 'error');
+    }
+  </script>
+</body>
+</html>

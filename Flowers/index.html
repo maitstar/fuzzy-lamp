@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zodiac Bouquet Engine</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      max-width: 1400px;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .canvas-wrapper {
+      flex: 1;
+      min-width: 300px;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    canvas {
+      border: 3px solid #ddd;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      cursor: crosshair;
+      width: 100%;
+      height: auto;
+      max-width: 600px;
+      aspect-ratio: 1;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    button.secondary {
+      background: #666;
+    }
+
+    button.secondary:hover {
+      background: #555;
+    }
+
+    .controls {
+      flex: 0 1 300px;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      min-height: 400px;
+    }
+
+    .controls h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.3em;
+    }
+
+    .sign-selector {
+      margin-bottom: 25px;
+    }
+
+    .sign-selector label {
+      display: block;
+      color: #555;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+    }
+
+    .sign-selector select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .sign-selector select:hover {
+      border-color: #4CAF50;
+    }
+
+    .sign-selector select:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    }
+
+    .accents-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+
+    .accents-section h3 {
+      color: #333;
+      margin-bottom: 12px;
+      font-size: 1.1em;
+    }
+
+    .accents-tray {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .accent-flower {
+      padding: 10px;
+      background: #f9f9f9;
+      border: 2px solid #4CAF50;
+      border-radius: 5px;
+      text-align: center;
+      cursor: grab;
+      font-size: 0.85em;
+      color: #555;
+      transition: all 0.3s;
+      user-select: none;
+    }
+
+    .accent-flower:hover {
+      background: #f0f8f0;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    .accent-flower:active {
+      cursor: grabbing;
+    }
+
+    .accent-instructions {
+      font-size: 0.85em;
+      color: #777;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 5px;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .placed-accents {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .placed-accents h4 {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .placed-accent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .placed-accent-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #555;
+    }
+
+    .placed-accent-item button {
+      padding: 4px 8px;
+      font-size: 0.8em;
+      background: #e74c3c;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .placed-accent-item button:hover {
+      background: #c0392b;
+    }
+
+    .info-box {
+      background: #e8f5e9;
+      border-left: 4px solid #4CAF50;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 0.9em;
+      color: #2e7d32;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        gap: 15px;
+      }
+
+      .controls {
+        min-height: auto;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌸 Zodiac Bouquet Engine 🌸</h1>
+
+  <div class="container">
+    <div class="canvas-wrapper">
+      <canvas id="bouquetCanvas"></canvas>
+      <div class="button-group">
+        <button onclick="downloadBouquet()">📥 Download Bouquet</button>
+        <button class="secondary" onclick="resetBouquet()">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="info-box">
+        <strong>✨ Your Birth Chart Flowers</strong><br>
+        Select your Sun, Moon, and Rising signs to create your unique bouquet.
+      </div>
+
+      <div class="sign-selector">
+        <label for="sunSign">☀️ Sun Sign (Center, 1.2×)</label>
+        <select id="sunSign" onchange="updateBouquet()"></select>
+      </div>
+
+      <div class="sign-selector">
+        <label for="moonSign">🌙 Moon Sign (-30°, 0.9×)</label>
+        <select id="moonSign" onchange="updateBouquet()"></select>
+      </div>
+
+      <div class="sign-selector">
+        <label for="risingSign">⬆️ Rising Sign (Behind, 0.7×)</label>
+        <select id="risingSign" onchange="updateBouquet()"></select>
+      </div>
+
+      <div class="accents-section">
+        <h3>🍃 Add Greenery</h3>
+        <p class="accent-instructions">Drag flowers below onto the bouquet to add them. Click flowers on the bouquet to remove.</p>
+
+        <div class="accents-tray" id="accentsTray"></div>
+
+        <div class="placed-accents" id="placedAccents" style="display: none;">
+          <h4>Placed Accents:</h4>
+          <div class="placed-accent-list" id="accentList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    // Canvas and context
+    let canvas, ctx;
+    const imageCache = {};
+    let imagesLoaded = false;
+
+    // State
+    const state = {
+      sunSign: 'Leo',
+      moonSign: 'Pisces',
+      risingSign: 'Aquarius',
+      accents: []
+    };
+
+    let nextAccentId = 0;
+
+    // Initialize
+    function init() {
+      canvas = document.getElementById('bouquetCanvas');
+      ctx = canvas.getContext('2d');
+
+      // Initialize UI
+      populateSelects();
+      populateAccentsTray();
+      resizeCanvas();
+      loadImages();
+    }
+
+    function populateSelects() {
+      const sunSelect = document.getElementById('sunSign');
+      const moonSelect = document.getElementById('moonSign');
+      const risingSelect = document.getElementById('risingSign');
+
+      zodiacSigns.forEach(sign => {
+        sunSelect.appendChild(new Option(sign, sign));
+        moonSelect.appendChild(new Option(sign, sign));
+        risingSelect.appendChild(new Option(sign, sign));
+      });
+
+      sunSelect.value = state.sunSign;
+      moonSelect.value = state.moonSign;
+      risingSelect.value = state.risingSign;
+
+      sunSelect.addEventListener('change', updateBouquet);
+      moonSelect.addEventListener('change', updateBouquet);
+      risingSelect.addEventListener('change', updateBouquet);
+    }
+
+    function populateAccentsTray() {
+      const tray = document.getElementById('accentsTray');
+      accentFlowers.forEach(flower => {
+        const div = document.createElement('div');
+        div.className = 'accent-flower';
+        div.textContent = flower.replace(/_\d+$/, '');
+        div.draggable = true;
+        div.dataset.flower = flower;
+
+        div.addEventListener('dragstart', (e) => {
+          e.dataTransfer.effectAllowed = 'copy';
+          e.dataTransfer.setData('flower', flower);
+        });
+
+        tray.appendChild(div);
+      });
+
+      canvas.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+      });
+
+      canvas.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const flower = e.dataTransfer.getData('flower');
+        if (flower) {
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          addAccent(flower, x, y);
+        }
+      });
+
+      canvas.addEventListener('click', (e) => {
+        if (!imagesLoaded) return;
+        const rect = canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+        const baseScale = canvas.width / 400;
+
+        for (let i = state.accents.length - 1; i >= 0; i--) {
+          const accent = state.accents[i];
+          const img = imageCache[accent.flower];
+          if (!img) continue;
+
+          const scale = 0.5 * baseScale;
+          const w = img.width * scale;
+          const h = img.height * scale;
+          const hitbox = 30;
+
+          if (Math.abs(clickX - accent.x) < w / 2 + hitbox && Math.abs(clickY - accent.y) < h / 2 + hitbox) {
+            removeAccent(i);
+            return;
+          }
+        }
+      });
+    }
+
+    function resizeCanvas() {
+      const wrapper = canvas.parentElement;
+      const maxSize = Math.min(wrapper.clientWidth, window.innerHeight * 0.7);
+      canvas.width = maxSize;
+      canvas.height = maxSize;
+      updateBouquet();
+    }
+
+    function loadImages() {
+      const flowers = new Set();
+      Object.values(zodiacFlowers).forEach(f => flowers.add(f));
+      accentFlowers.forEach(f => flowers.add(f));
+
+      let loaded = 0;
+      let total = flowers.size;
+
+      flowers.forEach(flower => {
+        const path = getFlowerPath(flower);
+        if (path) {
+          const img = new Image();
+          img.src = path;
+          img.onload = () => {
+            imageCache[flower] = img;
+            loaded++;
+            if (loaded === total) {
+              imagesLoaded = true;
+              updateBouquet();
+            }
+          };
+          img.onerror = () => {
+            loaded++;
+            if (loaded === total) {
+              imagesLoaded = true;
+              updateBouquet();
+            }
+          };
+        } else {
+          loaded++;
+          if (loaded === total) {
+            imagesLoaded = true;
+            updateBouquet();
+          }
+        }
+      });
+    }
+
+    function updateBouquet() {
+      state.sunSign = document.getElementById('sunSign').value;
+      state.moonSign = document.getElementById('moonSign').value;
+      state.risingSign = document.getElementById('risingSign').value;
+
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (!imagesLoaded) return;
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const baseScale = canvas.width / 400;
+
+      const sunFlower = zodiacFlowers[state.sunSign];
+      const moonFlower = zodiacFlowers[state.moonSign];
+      const risingFlower = zodiacFlowers[state.risingSign];
+
+      // Render in order: rising, sun, moon
+      renderFlower(imageCache[risingFlower], centerX, centerY, 0.7 * baseScale, 0);
+      renderFlower(imageCache[sunFlower], centerX, centerY, 1.2 * baseScale, 0);
+      renderFlower(imageCache[moonFlower], centerX, centerY, 0.9 * baseScale, -30);
+
+      // Render accents
+      state.accents.forEach(accent => {
+        renderFlower(imageCache[accent.flower], accent.x, accent.y, 0.5 * baseScale, 0);
+      });
+    }
+
+    function renderFlower(img, x, y, scale, rotation) {
+      if (!img) return;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.95;
+
+      const w = img.width * scale;
+      const h = img.height * scale;
+      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      ctx.restore();
+    }
+
+    function addAccent(flower, x, y) {
+      state.accents.push({ flower, x, y, id: nextAccentId++ });
+      updateBouquet();
+      updateAccentsUI();
+    }
+
+    function removeAccent(idx) {
+      state.accents.splice(idx, 1);
+      updateBouquet();
+      updateAccentsUI();
+    }
+
+    function updateAccentsUI() {
+      const container = document.getElementById('placedAccents');
+      const list = document.getElementById('accentList');
+
+      if (state.accents.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      list.innerHTML = '';
+
+      state.accents.forEach((accent, idx) => {
+        const item = document.createElement('div');
+        item.className = 'placed-accent-item';
+
+        const name = document.createElement('span');
+        name.textContent = accent.flower.replace(/_\d+$/, '');
+
+        const btn = document.createElement('button');
+        btn.textContent = '✕ Remove';
+        btn.onclick = () => removeAccent(idx);
+
+        item.appendChild(name);
+        item.appendChild(btn);
+        list.appendChild(item);
+      });
+    }
+
+    function downloadBouquet() {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `zodiac-bouquet-${state.sunSign}-${state.moonSign}-${state.risingSign}.png`;
+      link.click();
+    }
+
+    function resetBouquet() {
+      state.accents = [];
+      state.sunSign = 'Leo';
+      state.moonSign = 'Pisces';
+      state.risingSign = 'Aquarius';
+
+      document.getElementById('sunSign').value = state.sunSign;
+      document.getElementById('moonSign').value = state.moonSign;
+      document.getElementById('risingSign').value = state.risingSign;
+
+      updateBouquet();
+      updateAccentsUI();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // Start initialization when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>

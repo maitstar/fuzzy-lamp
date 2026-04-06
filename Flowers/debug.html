@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Debug Zodiac Bouquet</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #f0f0f0; }
+    pre { background: white; padding: 10px; border: 1px solid #ccc; overflow-x: auto; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Zodiac Bouquet Engine - Debug</h1>
+  <div id="output"></div>
+
+  <script>
+    const output = document.getElementById('output');
+
+    function log(msg, isError = false) {
+      const div = document.createElement('div');
+      div.textContent = msg;
+      div.className = isError ? 'error' : 'success';
+      output.appendChild(div);
+      console.log(msg);
+    }
+
+    // Check if data.js is loaded
+    log('Checking data.js...');
+
+    try {
+      // Try to load data.js inline
+      fetch('data.js')
+        .then(r => r.text())
+        .then(text => {
+          log('data.js loaded, content length: ' + text.length);
+
+          // Check if zodiacSigns is defined
+          if (typeof zodiacSigns !== 'undefined') {
+            log('✓ zodiacSigns is defined: ' + zodiacSigns.length + ' signs');
+          } else {
+            log('✗ zodiacSigns is NOT defined', true);
+          }
+        })
+        .catch(e => log('✗ Failed to load data.js: ' + e, true));
+    } catch(e) {
+      log('✗ Error: ' + e, true);
+    }
+
+    // List all errors
+    window.addEventListener('error', (event) => {
+      log('✗ JavaScript Error: ' + event.message + ' (' + event.filename + ':' + event.lineno + ')', true);
+    });
+  </script>
+  <script src="data.js"></script>
+  <script>
+    setTimeout(() => {
+      if (typeof zodiacSigns !== 'undefined') {
+        document.body.innerHTML += '<h2>✓ Success!</h2>';
+        document.body.innerHTML += '<p>Zodiac Signs: ' + zodiacSigns.join(', ') + '</p>';
+        document.body.innerHTML += '<p>Total flowers available: ' + Object.keys(flowerFiles).length + '</p>';
+      } else {
+        document.body.innerHTML += '<h2>✗ Failed</h2>';
+        document.body.innerHTML += '<p>zodiacSigns not loaded</p>';
+      }
+    }, 500);
+  </script>
+</body>
+</html>
