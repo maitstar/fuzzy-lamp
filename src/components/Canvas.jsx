@@ -10,13 +10,12 @@ const Canvas = forwardRef(function Canvas(
   return (
     <div
       ref={ref}
-      className="flex-1 flex items-center justify-center rounded-3xl overflow-hidden relative meadow-canvas"
+      className="flex-1 flex items-center justify-center rounded-3xl overflow-hidden relative meadow-canvas border-2 border-amber-800"
       style={{
         minHeight: '500px',
         width: '100%',
         maxWidth: '700px',
-        boxShadow: '0 8px 32px rgba(200, 150, 200, 0.15)',
-        border: '3px solid rgba(230, 190, 190, 0.3)',
+        boxShadow: '0 8px 32px rgba(101, 89, 67, 0.15)',
       }}
     >
       {/* Grass texture overlay */}

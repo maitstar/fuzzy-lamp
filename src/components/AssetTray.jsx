@@ -16,17 +16,17 @@ export default function AssetTray({
   return (
     <div className="fixed bottom-6 right-6 max-w-sm z-40">
       {/* Floating Seed Library */}
-      <div className="bg-white bg-opacity-98 backdrop-blur-sm rounded-3xl border-2 border-pink-300 shadow-2xl overflow-hidden">
+      <div className="bg-amber-50 backdrop-blur-sm rounded-3xl border-2 border-amber-800 shadow-2xl overflow-hidden">
         {/* Header/Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-pink-300 to-purple-300 hover:from-pink-400 hover:to-purple-400 transition text-white"
+          className="w-full px-6 py-4 flex items-center justify-between bg-amber-100 hover:bg-amber-200 transition text-amber-950 border-b-2 border-amber-800"
         >
           <div>
             <h2 className="text-lg font-italiana tracking-wide">
               🌿 Seed Library
             </h2>
-            <p className="text-xs font-garamond opacity-90">
+            <p className="text-xs font-garamond">
               {filteredFlowers.length} seeds
             </p>
           </div>
@@ -37,25 +37,25 @@ export default function AssetTray({
 
         {/* Content (collapsible) */}
         {isOpen && (
-          <div className="border-t-2 border-pink-200">
+          <div className="border-t-2 border-amber-800">
             {/* Search */}
-            <div className="p-4 border-b border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50">
+            <div className="p-4 border-b border-amber-800 bg-amber-50">
               <div className="relative">
-                <Search className="absolute left-3 top-3 text-pink-400" size={16} />
+                <Search className="absolute left-3 top-3 text-amber-700" size={16} />
                 <input
                   type="text"
                   placeholder="Find a flower..."
                   value={searchQuery}
                   onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 border-2 border-pink-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 bg-white text-purple-900"
+                  className="w-full pl-9 pr-3 py-2 border-2 border-amber-800 rounded-xl text-sm focus:outline-none focus:border-green-800 bg-transparent text-amber-950"
                 />
               </div>
             </div>
 
             {/* Flower Grid */}
-            <div className="max-h-56 overflow-y-auto p-3 bg-white">
+            <div className="max-h-56 overflow-y-auto p-3 bg-amber-50">
               {filteredFlowers.length === 0 ? (
-                <div className="text-center text-sm text-purple-400 py-6 font-garamond">
+                <div className="text-center text-sm text-amber-700 py-6 font-garamond">
                   No flowers found 🌸
                 </div>
               ) : (
@@ -64,11 +64,9 @@ export default function AssetTray({
                     <button
                       key={flower.id}
                       onClick={() => onFlowerSelect(flower.name)}
-                      className="p-2 text-left text-xs bg-gradient-to-br from-pink-100 to-purple-100 hover:from-pink-200 hover:to-purple-200 rounded-2xl transition duration-200 border-2 border-pink-200 hover:border-pink-400 hover:shadow-md active:scale-95"
+                      className="p-2 text-left text-xs border-2 border-amber-800 rounded-xl transition duration-200 hover:border-green-800 hover:bg-green-800 hover:bg-opacity-5 active:scale-95 text-amber-950 font-garamond font-medium"
                     >
-                      <div className="font-garamond font-medium text-purple-800 truncate">
-                        {flower.name}
-                      </div>
+                      {flower.name}
                     </button>
                   ))}
                 </div>
@@ -76,7 +74,7 @@ export default function AssetTray({
             </div>
 
             {/* Info Footer */}
-            <div className="p-3 text-xs text-purple-700 border-t border-pink-200 bg-gradient-to-r from-yellow-50 to-pink-50 italic font-garamond">
+            <div className="p-3 text-xs text-amber-800 border-t border-amber-800 bg-amber-100 italic font-garamond">
               Click a seed to plant it. Drag to move. Double-click to remove.
             </div>
           </div>
