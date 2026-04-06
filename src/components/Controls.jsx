@@ -37,19 +37,19 @@ export default function Controls({
     <div className="controls-section mt-6 flex flex-col gap-4">
       {/* Message input */}
       {showMessageInput && (
-        <div className="p-4 bg-white bg-opacity-70 rounded-lg border border-gray-200">
-          <label className="block text-xs font-semibold text-gray-600 mb-2">
-            Add a Message
+        <div className="p-5 bg-gradient-to-br from-yellow-50 to-pink-50 rounded-2xl border-2 border-pink-200">
+          <label className="block text-sm font-garamond font-semibold text-pink-700 mb-2">
+            Add Your Blessing
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Write a blessing or intention to accompany your garden..."
-            className="w-full p-3 border border-green-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+            placeholder="Write a message or intention to carry with your garden..."
+            className="w-full p-3 border-2 border-pink-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 resize-none bg-white text-purple-900 placeholder-purple-300"
             rows="3"
           />
-          <p className="text-xs text-gray-500 mt-2">
-            Your blessing will appear on the final image.
+          <p className="text-xs text-pink-600 mt-2 italic">
+            Your blessing will appear on the harvested image.
           </p>
         </div>
       )}
@@ -58,7 +58,7 @@ export default function Controls({
       <div className="flex gap-3">
         <button
           onClick={onMessageToggle}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-200 hover:bg-green-300 rounded-full font-sans font-medium text-sm transition text-green-800"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-yellow-200 to-orange-200 hover:from-yellow-300 hover:to-orange-300 rounded-full font-garamond font-medium text-sm transition text-orange-800 shadow-md hover:shadow-lg active:scale-95"
           title="Add a blessing to your garden"
         >
           <MessageCircle size={18} />
@@ -68,7 +68,7 @@ export default function Controls({
         <button
           onClick={handleExport}
           disabled={isExporting}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-sans font-medium text-sm transition disabled:opacity-50 hover:shadow-lg"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white rounded-full font-garamond font-medium text-sm transition disabled:opacity-50 shadow-md hover:shadow-lg active:scale-95"
           title="Save your garden as a high-resolution image"
         >
           <Download size={18} />
@@ -77,7 +77,7 @@ export default function Controls({
 
         <button
           onClick={onClear}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-200 hover:bg-gray-300 rounded-full font-sans font-medium text-sm transition"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-red-200 to-pink-200 hover:from-red-300 hover:to-pink-300 rounded-full font-garamond font-medium text-sm transition text-red-800 shadow-md hover:shadow-lg active:scale-95"
           title="Clear the garden"
         >
           <Trash2 size={18} />
@@ -86,10 +86,10 @@ export default function Controls({
       </div>
 
       {/* Instructions */}
-      <div className="text-xs text-green-800 text-center p-3 bg-gradient-to-r from-green-100 to-green-50 rounded-lg font-garamond border border-green-200">
-        <p>🌱 Use the Seed Library to add more flowers to your manifestation garden</p>
-        <p>↻ Click each flower to rotate, resize, or remove it</p>
-        <p>🌿 Harvest your sacred garden when it's ready to share</p>
+      <div className="text-xs text-center p-4 bg-gradient-to-r from-purple-50 via-pink-50 to-yellow-50 rounded-2xl font-garamond border-2 border-purple-200 text-purple-800">
+        <p>🌸 Use the Seed Library to add more flowers</p>
+        <p>✨ Click each flower to rotate, resize, or remove</p>
+        <p>🌿 Harvest when your garden is ready</p>
       </div>
     </div>
   );

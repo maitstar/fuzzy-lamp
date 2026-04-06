@@ -1,29 +1,70 @@
-/* App-specific styles */
+/* Manifestation Garden - Soft Scrapbook Aesthetic */
+
+/* Soft cream background with subtle texture */
+body, html {
+  background: #fef9f3;
+}
 
 .canvas-container {
   perspective: 1000px;
 }
 
-/* Grass texture background using SVG pattern */
+/* Soft gradient canvas background - no harsh green */
+.meadow-canvas {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  background: linear-gradient(135deg, #fdf8f0 0%, #f5ede3 50%, #ede5dd 100%);
+  transform: rotateX(2deg);
+  transform-origin: center top;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Soft grass texture with much lighter palette */
 .grass-texture {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' fill='%232d5016' /%3E%3Crect width='100' height='100' fill='%23396023' opacity='0.5' filter='url(%23noise)' /%3E%3C/svg%3E");
-  background-size: 100px 100px;
-  background-color: #2d5016;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='3' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='200' height='200' fill='%23e8dfd5' /%3E%3Crect width='200' height='200' fill='%23d9cfc0' opacity='0.3' filter='url(%23noise)' /%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-color: #e8dfd5;
+  opacity: 0.6;
   z-index: 0;
 }
 
-/* Perspective tilt for the meadow effect */
-.meadow-canvas {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  background: linear-gradient(180deg, #3a6c2e 0%, #2d5016 50%, #1f3a10 100%);
-  transform: rotateX(8deg);
-  transform-origin: center top;
+/* Sway animation for planted flowers - gentle breeze effect */
+.flower-sway {
+  animation: sway 7s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(0.5deg);
+  }
+}
+
+/* Soft dirt mound shadow at base of flower */
+.dirt-mound {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 10px;
+  background: radial-gradient(ellipse at center, rgba(139, 119, 101, 0.25) 0%, rgba(139, 119, 101, 0.05) 100%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(2px);
 }
 
 /* Drag feedback */
@@ -31,7 +72,7 @@
   opacity: 0.95;
 }
 
-/* Scrollbar customization */
+/* Scrollbar customization - softer */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -42,12 +83,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4A574;
+  background: #d9cfc0;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8956A;
+  background: #c9bfb0;
 }
 
 /* Selection prevention for non-interactive elements */
@@ -63,21 +104,21 @@ button,
 select,
 input,
 textarea {
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-/* Focus states */
+/* Soft focus states with glow */
 button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #FFFDF5, 0 0 0 4px #F4D6D6;
+  box-shadow: 0 0 0 3px rgba(230, 190, 190, 0.3);
 }
 
 /* Motion elements */
 .flower-float {
-  animation: float 4s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -85,57 +126,24 @@ textarea:focus-visible {
     transform: translateY(0px) translateX(0px);
   }
   25% {
-    transform: translateY(-4px) translateX(1px);
+    transform: translateY(-3px) translateX(1px);
   }
   50% {
-    transform: translateY(-8px) translateX(-1px);
+    transform: translateY(-6px) translateX(-1px);
   }
   75% {
-    transform: translateY(-4px) translateX(1px);
+    transform: translateY(-3px) translateX(1px);
   }
 }
 
-/* Sway animation for planted flowers - gentle breeze effect */
-.flower-sway {
-  animation: sway 6s ease-in-out infinite;
-}
-
-@keyframes sway {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(1.5deg);
-  }
-  50% {
-    transform: rotate(-1.5deg);
-  }
-  75% {
-    transform: rotate(0.8deg);
-  }
-}
-
-/* Dirt mound shadow at base of flower */
-.dirt-mound {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 12px;
-  background: radial-gradient(ellipse at center, rgba(101, 67, 33, 0.6) 0%, rgba(101, 67, 33, 0.2) 100%);
-  border-radius: 50%;
-  z-index: -1;
-}
-
-/* Range input styling */
+/* Range input styling - soft */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 6px;
+  height: 5px;
   border-radius: 3px;
-  background: linear-gradient(to right, #D4B5E8, #E8A8C4);
+  background: linear-gradient(to right, #e8d5e8, #f0d6d6);
   outline: none;
   pointer-events: none;
 }
@@ -147,16 +155,16 @@ input[type="range"]::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #E8A8C4;
+  background: #f0d6d6;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(230, 190, 190, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(230, 190, 190, 0.4);
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -164,16 +172,16 @@ input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #E8A8C4;
+  background: #f0d6d6;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(230, 190, 190, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 input[type="range"]::-moz-range-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(230, 190, 190, 0.4);
 }
 
 /* Print styles */

@@ -66,7 +66,7 @@ export default function FlowerElement({
     <motion.div
       ref={elementRef}
       className={`absolute cursor-grab active:cursor-grabbing group transition-all duration-200 ${
-        isSealing ? '' : 'hover:ring-2 hover:ring-offset-2 hover:ring-pastel-rose hover:drop-shadow-lg'
+        isSealing ? '' : 'hover:drop-shadow-xl'
       }`}
       style={{
         left: `${flower.x}px`,
@@ -115,7 +115,7 @@ export default function FlowerElement({
       {/* Controls (only visible when not sealing) */}
       {!isSealing && showControls && (
         <motion.div
-          className="absolute -top-14 left-1/2 transform -translate-x-1/2 flex gap-3 bg-white rounded-full px-4 py-3 shadow-xl border border-gray-100"
+          className="absolute -top-16 left-1/2 transform -translate-x-1/2 flex gap-3 bg-white rounded-full px-4 py-3 shadow-xl border-2 border-pink-200"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
@@ -123,7 +123,7 @@ export default function FlowerElement({
           {/* Rotate button */}
           <button
             onClick={handleRotate}
-            className="p-2 hover:bg-pastel-lavender rounded-full transition text-gray-700 hover:text-gray-900"
+            className="p-2 hover:bg-pink-100 rounded-full transition text-purple-600 hover:text-purple-800"
             title="Rotate flower (45°)"
           >
             <RotateCw size={16} />
@@ -131,7 +131,7 @@ export default function FlowerElement({
 
           {/* Scale slider container */}
           <div className="flex items-center gap-2">
-            <label className="text-xs text-gray-500 font-medium whitespace-nowrap">Size:</label>
+            <label className="text-xs text-purple-600 font-garamond font-medium whitespace-nowrap">Size:</label>
             <input
               type="range"
               min="0.3"
@@ -139,11 +139,11 @@ export default function FlowerElement({
               step="0.1"
               value={flower.scale}
               onChange={handleScaleChange}
-              className="w-24 h-2 bg-gradient-to-r from-pastel-lavender to-pastel-rose rounded-full appearance-none cursor-pointer accent-pastel-rose"
+              className="w-24 h-2 bg-gradient-to-r from-pink-300 to-purple-300 rounded-full appearance-none cursor-pointer"
               style={{
                 WebkitAppearance: 'none',
                 appearance: 'none',
-                background: `linear-gradient(to right, #D4B5E8 0%, #E8A8C4 ${(flower.scale - 0.3) / 1.7 * 100}%, #E8D4E0 ${(flower.scale - 0.3) / 1.7 * 100}%, #E8D4E0 100%)`,
+                background: `linear-gradient(to right, #f472b6 0%, #d8b4fe ${(flower.scale - 0.3) / 1.7 * 100}%, #e9d5ff ${(flower.scale - 0.3) / 1.7 * 100}%, #e9d5ff 100%)`,
               }}
               title={`Resize flower (${(flower.scale * 100).toFixed(0)}%)`}
             />
@@ -152,7 +152,7 @@ export default function FlowerElement({
           {/* Delete button */}
           <button
             onClick={handleDelete}
-            className="p-2 hover:bg-red-100 text-red-500 rounded-full transition hover:text-red-700"
+            className="p-2 hover:bg-red-100 text-red-400 rounded-full transition hover:text-red-600"
             title="Delete flower"
           >
             <Trash2 size={16} />
@@ -163,7 +163,7 @@ export default function FlowerElement({
       {/* Tooltip with flower name */}
       {!isSealing && showControls && (
         <motion.div
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-serif text-gray-700 bg-white px-3 py-2 rounded-lg shadow-lg border border-gray-100 whitespace-nowrap font-medium"
+          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-garamond text-purple-700 bg-gradient-to-r from-pink-100 to-purple-100 px-3 py-2 rounded-lg shadow-lg border-2 border-pink-200 whitespace-nowrap font-medium"
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from './components/Header';
-import IntentionSelector from './components/IntentionSelector';
+import AstrologySelector from './components/AstrologySelector';
 import Canvas from './components/Canvas';
 import AssetTray from './components/AssetTray';
 import Controls from './components/Controls';
@@ -228,13 +228,16 @@ function App() {
       <div className="flex-1 flex gap-6 p-6 overflow-hidden">
         {/* Left: Canvas area */}
         <div className="flex-1 flex flex-col">
-          {/* Intention selector */}
-          <IntentionSelector
-            selectedIntention={selectedIntention}
-            onIntentionChange={setSelectedIntention}
+          {/* Astrology & Intention selector */}
+          <AstrologySelector
             sunSign={sunSign}
             moonSign={moonSign}
             risingSign={risingSign}
+            onSunChange={setSunSign}
+            onMoonChange={setMoonSign}
+            onRisingChange={setRisingSign}
+            selectedIntention={selectedIntention}
+            onIntentionChange={setSelectedIntention}
             onNatalBloom={plantNatalBloom}
           />
 
