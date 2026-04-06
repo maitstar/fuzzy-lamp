@@ -1,20 +1,24 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from './components/Header';
-import ZodiacSelector from './components/ZodiacSelector';
+import IntentionSelector from './components/IntentionSelector';
 import Canvas from './components/Canvas';
 import AssetTray from './components/AssetTray';
 import Controls from './components/Controls';
 import { flowerManifest } from './utils/flowerManifest';
 import { zodiacFlowers, flowerScales } from './utils/zodiacMapping';
+import { intentionFlowers, getFlowerForIntention } from './utils/intentionMapping';
 import { useFlowerBatch } from './hooks/useFlowerProcessing';
 import './App.css';
 
 function App() {
   const canvasRef = useRef(null);
+  // Zodiac signs for Natal Bloom feature
   const [sunSign, setSunSign] = useState('Leo');
   const [moonSign, setMoonSign] = useState('Pisces');
   const [risingSign, setRisingSign] = useState('Aquarius');
+  // Manifestation intention
+  const [selectedIntention, setSelectedIntention] = useState('');
   const [flowers, setFlowers] = useState([]);
   const [nextId, setNextId] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,19 +30,48 @@ function App() {
   const imagePaths = flowerManifest.map(f => `/flowers/${f.filename}`);
   const { processed: processedImages, loading: processingImages, progress } = useFlowerBatch(imagePaths);
 
-  // Initialize zodiac bouquet
+  // Auto-plant intention flower when selected
   useEffect(() => {
-    generateZodiacBouquet();
-  }, [sunSign, moonSign, risingSign, processedImages]);
+    if (selectedIntention && processedImages) {
+      plantIntentionFlower(selectedIntention);
+    }
+  }, [selectedIntention, processedImages]);
 
-  const generateZodiacBouquet = () => {
+  // Plant a flower based on intention selection
+  const plantIntentionFlower = (intention) => {
+    const flowerName = getFlowerForIntention(intention);
+    if (!flowerName) return;
+
+    const flowerData = flowerManifest.find(f => f.name === flowerName);
+    if (!flowerData) return;
+
+    const imagePath = `/flowers/${flowerData.filename}`;
+    if (!processedImages[imagePath]) return;
+
+    // Plant at random position in the garden
+    const newFlower = {
+      id: nextId,
+      name: flowerName,
+      src: processedImages[imagePath],
+      originalSrc: imagePath,
+      x: 150 + Math.random() * 400,
+      y: 150 + Math.random() * 350,
+      scale: 0.8 + Math.random() * 0.4,
+      rotation: Math.random() * 360,
+      zIndex: flowers.length + 1,
+      type: 'intention',
+    };
+
+    setFlowers([...flowers, newFlower]);
+    setNextId(nextId + 1);
+    setSelectedIntention(''); // Reset intention selector
+  };
+
+  // Plant the 3 zodiac flowers as a cluster (Natal Bloom)
+  const plantNatalBloom = () => {
     if (Object.keys(processedImages).length === 0) return;
 
     const newFlowers = [];
-    const canvasWidth = 600;
-    const canvasHeight = 600;
-
-    // Fan-shaped positioning for zodiac flowers
     const positions = {
       // Rising: Back-Left (small, z: 3)
       rising: { x: 200, y: 450, scale: flowerScales.rising, zIndex: 3, baseRotation: -20 },
@@ -54,7 +87,7 @@ function App() {
       y: pos.y + (Math.random() - 0.5) * 30,
     });
 
-    // ===== Sun Flower (Front-Center, z: 5) =====
+    // Plant Sun Flower
     const sunFlowerName = zodiacFlowers[sunSign];
     const sunFlowerData = flowerManifest.find(f => f.name === sunFlowerName);
     if (sunFlowerData) {
@@ -62,7 +95,7 @@ function App() {
       if (processedImages[sunImagePath]) {
         const sunPos = addSmallVariation(positions.sun);
         newFlowers.push({
-          id: nextId + 1,
+          id: nextId,
           name: sunFlowerName,
           src: processedImages[sunImagePath],
           originalSrc: sunImagePath,
@@ -76,7 +109,7 @@ function App() {
       }
     }
 
-    // ===== Moon Flower (Back-Right, z: 4) =====
+    // Plant Moon Flower
     const moonFlowerName = zodiacFlowers[moonSign];
     const moonFlowerData = flowerManifest.find(f => f.name === moonFlowerName);
     if (moonFlowerData) {
@@ -84,7 +117,7 @@ function App() {
       if (processedImages[moonImagePath]) {
         const moonPos = addSmallVariation(positions.moon);
         newFlowers.push({
-          id: nextId + 2,
+          id: nextId + 1,
           name: moonFlowerName,
           src: processedImages[moonImagePath],
           originalSrc: moonImagePath,
@@ -98,7 +131,7 @@ function App() {
       }
     }
 
-    // ===== Rising Flower (Back-Left, z: 3) =====
+    // Plant Rising Flower
     const risingFlowerName = zodiacFlowers[risingSign];
     const risingFlowerData = flowerManifest.find(f => f.name === risingFlowerName);
     if (risingFlowerData) {
@@ -106,7 +139,7 @@ function App() {
       if (processedImages[risingImagePath]) {
         const risingPos = addSmallVariation(positions.rising);
         newFlowers.push({
-          id: nextId + 3,
+          id: nextId + 2,
           name: risingFlowerName,
           src: processedImages[risingImagePath],
           originalSrc: risingImagePath,
@@ -120,44 +153,8 @@ function App() {
       }
     }
 
-    // ===== Auto-Fillers: Ivy & Delphinium (Behind everything, z: 2) =====
-    const fillerFlowers = ['Ivy', 'Delphinium'];
-    const fillerPositions = [
-      { x: 150, y: 500 }, // Left-back
-      { x: 450, y: 480 }, // Right-back
-      { x: 300, y: 520 }, // Center-back
-    ];
-
-    // Add 2-3 random fillers
-    const fillerCount = 2 + Math.floor(Math.random() * 2);
-    for (let i = 0; i < fillerCount; i++) {
-      const fillerName = fillerFlowers[Math.floor(Math.random() * fillerFlowers.length)];
-      const fillerData = flowerManifest.find(f => f.name === fillerName);
-
-      if (fillerData) {
-        const fillerImagePath = `/flowers/${fillerData.filename}`;
-        if (processedImages[fillerImagePath]) {
-          const fillerPos = fillerPositions[i % fillerPositions.length];
-          const fillerVariation = addSmallVariation(fillerPos);
-
-          newFlowers.push({
-            id: nextId + 4 + i,
-            name: fillerName,
-            src: processedImages[fillerImagePath],
-            originalSrc: fillerImagePath,
-            x: fillerVariation.x,
-            y: fillerVariation.y,
-            scale: 0.4 + Math.random() * 0.3, // 0.4-0.7x
-            rotation: Math.random() * 360,
-            zIndex: 2,
-            type: 'filler',
-          });
-        }
-      }
-    }
-
-    setFlowers(newFlowers);
-    setNextId(nextId + 7); // Reserve IDs for sun, moon, rising, and up to 3 fillers
+    setFlowers([...flowers, ...newFlowers]);
+    setNextId(nextId + 3);
   };
 
   const addFlowerToCanvas = (flowerName) => {
@@ -197,20 +194,20 @@ function App() {
   };
 
   const clearCanvas = () => {
-    if (confirm('Clear all flowers? You can regenerate the zodiac bouquet.')) {
+    if (confirm('Clear the garden? All planted flowers will be removed.')) {
       setFlowers([]);
     }
   };
 
   if (processingImages) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-cream">
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-green-50 to-green-100">
         <div className="text-center">
-          <div className="text-2xl font-serif mb-4">✿ Digital Bouquet</div>
-          <div className="mb-4 text-sm text-gray-600">Processing flowers...</div>
-          <div className="w-48 h-1 bg-gray-200 rounded-full overflow-hidden">
+          <div className="text-2xl font-serif mb-4">🌿 Awakening the Garden</div>
+          <div className="mb-4 text-sm text-green-700">Germinating seeds...</div>
+          <div className="w-48 h-1 bg-green-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-pastel-rose rounded-full transition-all duration-300"
+              className="h-full bg-green-500 rounded-full transition-all duration-300"
               style={{ width: `${progress * 100}%` }}
             />
           </div>
@@ -231,14 +228,14 @@ function App() {
       <div className="flex-1 flex gap-6 p-6 overflow-hidden">
         {/* Left: Canvas area */}
         <div className="flex-1 flex flex-col">
-          {/* Zodiac selector */}
-          <ZodiacSelector
+          {/* Intention selector */}
+          <IntentionSelector
+            selectedIntention={selectedIntention}
+            onIntentionChange={setSelectedIntention}
             sunSign={sunSign}
             moonSign={moonSign}
             risingSign={risingSign}
-            onSunChange={setSunSign}
-            onMoonChange={setMoonSign}
-            onRisingChange={setRisingSign}
+            onNatalBloom={plantNatalBloom}
           />
 
           {/* Canvas */}

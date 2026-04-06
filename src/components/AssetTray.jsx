@@ -15,22 +15,22 @@ export default function AssetTray({
 
   return (
     <div className="fixed bottom-6 right-6 max-w-sm z-40">
-      {/* Floating Garden Bed */}
-      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-t-2xl border-2 border-gray-300 shadow-2xl overflow-hidden">
+      {/* Floating Seed Library */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-t-2xl border-2 border-green-400 shadow-2xl overflow-hidden">
         {/* Header/Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-pastel-peach to-pastel-rose hover:from-opacity-90 hover:to-opacity-90 transition"
+          className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 transition text-white"
         >
           <div>
-            <h2 className="text-lg font-italiana text-gray-800 tracking-wide">
-              🌿 Garden Bed
+            <h2 className="text-lg font-italiana tracking-wide">
+              🌱 Seed Library
             </h2>
-            <p className="text-xs text-gray-600 font-garamond">
-              {filteredFlowers.length} flowers available
+            <p className="text-xs font-garamond opacity-90">
+              {filteredFlowers.length} seeds available
             </p>
           </div>
-          <div className="text-gray-800">
+          <div>
             {isOpen ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
           </div>
         </button>
@@ -80,7 +80,7 @@ export default function AssetTray({
 
             {/* Info Footer */}
             <div className="p-3 text-xs text-gray-600 border-t border-gray-200 bg-gray-50 italic font-garamond">
-              Click to add. Drag on canvas to position. Double-click flowers to remove.
+              Click a seed to plant it. Drag in the garden to position. Double-click to uproot.
             </div>
           </div>
         )}

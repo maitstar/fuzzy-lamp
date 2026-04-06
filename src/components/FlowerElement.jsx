@@ -81,15 +81,18 @@ export default function FlowerElement({
       onMouseEnter={() => !isSealing && setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
       onDoubleClick={handleDoubleClick}
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.3 }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.6, type: 'spring', bounce: 0.6 }}
       whileDrag={{ scale: 1.08, filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.15))' }}
     >
+      {/* Dirt mound shadow at base */}
+      <div className="dirt-mound" style={{ width: `${flower.scale * 100}px` }} />
+
       {/* Flower image */}
       <motion.div
-        className={`relative ${!isSealing && 'flower-float'}`}
+        className={`relative ${!isSealing && 'flower-sway'}`}
         style={{
           width: `${flower.scale * 120}px`,
           height: `${flower.scale * 120}px`,

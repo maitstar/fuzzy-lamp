@@ -10,15 +10,18 @@ const Canvas = forwardRef(function Canvas(
   return (
     <div
       ref={ref}
-      className="flex-1 flex items-center justify-center bg-gradient-to-b from-cream to-gray-50 rounded-lg border-2 border-dashed border-gray-300 overflow-hidden relative"
+      className="flex-1 flex items-center justify-center rounded-lg border-2 border-dashed border-gray-400 overflow-hidden relative meadow-canvas"
       style={{
         minHeight: '500px',
         width: '100%',
         maxWidth: '700px',
       }}
     >
+      {/* Grass texture overlay */}
+      <div className="grass-texture" />
+
       {/* Container for flowers */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full z-10">
         {/* Flowers */}
         {flowers.map(flower => (
           <FlowerElement
